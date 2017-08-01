@@ -119,14 +119,26 @@ export class Top100Component implements OnInit, OnDestroy  {
       this.creatingpdf = true;
       //this.setPDFOverlay();
       type MyArrayType = Array<{text: string, link: string, style: string}>;
-      var pdfContent: MyArrayType = [];
-
+      //var pdfContent: MyArrayType = [];
+      var pdfContent: any[] = []; 
       for(var i = 0; i < this.companies.length; i++){
-        pdfContent.push({ text: this.companies[i].companyName, link: '', style: 'title' })
-        pdfContent.push({ text: this.companies[i].blurb, link: '', style: 'paragraph' })
-        pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})
+        var row = new Array();
+        row.push([{ text: this.companies[i].companyName, link: '', style: 'title' },{ text: this.companies[i].blurb, link: '', style: 'paragraph' },{text: this.companies[i].website, link: this.companies[i].website, style: 'website'}]);
+        pdfContent.push(row);
+        //pdfContent.push({ text: this.companies[i].companyName, link: '', style: 'title' })
+        //pdfContent.push({ text: this.companies[i].blurb, link: '', style: 'paragraph' })
+        //pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})
+      }
+      pdfMake.fonts = {
+        FreigSanPro: {
+          normal: 'FreigSanProLig.otf',
+          bold: 'FreigSanProSem.otf'
+        }
       }
       var docDefinition = {
+          defaultStyle: {
+            font: 'FreigSanPro'
+          },
           content: [
             {
               // if you specify width, image will scale proportionally
@@ -143,7 +155,14 @@ export class Top100Component implements OnInit, OnDestroy  {
               alignment: 'center',
               margin: [0, 5, 0, 20]
             },
-            pdfContent/*,
+            {
+              table: {
+                dontBreakRows: true,
+                body: pdfContent               
+              },
+              layout: 'noBorders'
+            }
+            /*,
             {
               // under NodeJS (or in case you use virtual file system provided by pdfmake)
               // you can also pass file names here
@@ -151,24 +170,31 @@ export class Top100Component implements OnInit, OnDestroy  {
               width: 200
             }*/
           ],
+          pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+            return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
+          },
           styles: {
             header: {
+              font: 'FreigSanPro',
               fontSize: 16,
               bold: true,
               alignment: 'center'
             },
             title: {
+              font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left',
               margin: [0, 5, 0, 2.5]
             },
             paragraph: {
+              font: 'FreigSanPro',
               fontSize: 10,
               alignment: 'left',
               margin: [0, 2.5, 0, 1]
             },
             website: {
+              font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'left',
               color: 'blue',

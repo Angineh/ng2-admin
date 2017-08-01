@@ -85,7 +85,9 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#module
      */
     module: {
-
+      loaders: [
+        { test: /\.json$/, loader: 'json-loader' }
+      ],
       rules: [
         {
           test: /\.ts$/,
@@ -336,7 +338,8 @@ module.exports = function (options) {
       process: true,
       module: false,
       clearImmediate: false,
-      setImmediate: false
+      setImmediate: false,
+      fs: "empty"
     }
 
   };

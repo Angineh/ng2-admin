@@ -173,7 +173,8 @@
           <div class="col-md-4 offset-md-8" style="margin:0px">
               <div class="col-md-12" id="profilePicDiv" style="margin-right:0px;margin-top:10px;">
                 <!-- <img id="profilePic" src="/tourmee/ajax/profile_pic_business?id=$profile.getId()" style="margin-left:3px;margin-top:3px;"/> -->
-                <img id="profilePic" src="http://3.bp.blogspot.com/-FI6eeNNTcy4/VPw04yX3_qI/AAAAAAAAAFk/vEocwQMf0-8/s1600/startup-512.png" style="width: inherit;height: inherit;border-style: solid;border-color: white;border-radius: 4px;;padding: 0px;"/>
+                <div *ngIf="!company?.thumbnail"><img id="profilePic" src="https://3.bp.blogspot.com/-FI6eeNNTcy4/VPw04yX3_qI/AAAAAAAAAFk/vEocwQMf0-8/s1600/startup-512.png" style="width: inherit;height: inherit;border-style: solid;border-color: white;border-radius: 4px;;padding: 0px;"/></div>
+                <div *ngIf="company?.thumbnail"><img id="profilePic" src="data:image/png;base64,{{company.thumbnail}}" alt="Business Profile" style="width: inherit;height: inherit;border-style: solid;border-color: white;border-radius: 4px;;padding: 0px;"/></div>
               </div>
               <div class="col-md-12" style="text-align:right;margin-top:2px;">
                 <p *ngIf="company?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;font-weight:400; display: inline;font-size: 12px;margin-right:5px;color:#ffdd8a;">PORTFOLIO COMPANY</p>

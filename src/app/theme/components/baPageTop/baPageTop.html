@@ -1,6 +1,6 @@
 <div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
      [ngClass]="{scrolled: isScrolled}">
-  <a routerLink="/pages/dashboard" class="al-logo clearfix"><img src="http://pnptc.s3.amazonaws.com/wp-content/uploads/2015/08/plug-and-play-tech-center-logo-white.png" height="40" width="138" style="margin-left:-20px"></a>
+  <a routerLink="/pages/dashboard" class="al-logo clearfix"><img src="https://pnptc.s3.amazonaws.com/wp-content/uploads/2015/08/plug-and-play-tech-center-logo-white.png" height="40" width="138" style="margin-left:-20px"></a>
   <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
 
   <div class="search">
@@ -8,19 +8,21 @@
     <input id="searchInput" type="text" placeholder="Search for...">
   </div>
 
-  <div class="user-profile clearfix">
-    <p style="text-align: right; margin-top: 15px"><a style="color:#ffffff" [routerLink]="['/login']"><i style="padding-right: 4px;" class="fa fa-power-off"></i>Sign out</a></p>
-    <!--<div class="dropdown al-user-profile">
+  <div class="dropdown user-profile clearfix" style="text-align: right;">
+    <!-- <p style="text-align: right; margin-top: 15px"><a style="color:#ffffff" [routerLink]="['/login']"><i style="padding-right: 4px;" class="fa fa-power-off"></i>Sign out</a></p> -->
+<!--     <div class="dropdown al-user-profile"> -->
       <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
-        <img src="{{ ( 'Nasta' | baProfilePicture ) }}">
+        <p style="margin-top: 14px;display:inline-block;;margin-right:4px;">Welcome {{currentUser.name}}</p>
+        <i style="margin-right: 26px;" class="fa fa-caret-down" aria-hidden="true"></i>
+        <!-- <img src="{{ ( 'Nasta' | baProfilePicture ) }}"> -->
       </a>
-      <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
-        <li class="dropdown-item"><i class="dropdown-arr"></i></li>
-        <li class="dropdown-item"><a href><i class="fa fa-user"></i>Profile</a></li>
-        <li class="dropdown-item"><a href><i class="fa fa-cog"></i>Settings</a></li>
-        <li class="dropdown-item"><a href class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
+      <ul class="dropdown-menu top-dropdown-menu user-dropdown" aria-labelledby="user-profile-dd"> <!-- profile-dropdown -->
+        <li class="dropdown-item" style="padding-top:0px;padding-bottom:0px;"><i class="dropdown-arr"></i></li>
+        <li class="dropdown-item"><a href="/" onclick="return false;"><i class="fa fa-user"></i>Profile</a></li>
+        <li class="dropdown-item"><a href [routerLink]="['/pages/settings']"><i class="fa fa-cog"></i>Settings</a></li>
+        <li class="dropdown-item"><a href class="signout" [routerLink]="['/login']"><i class="fa fa-power-off"></i>Sign out</a></li>
       </ul>
-    </div>
-    <ba-msg-center></ba-msg-center>-->
+    <!-- </div> -->
+    <!-- <ba-msg-center></ba-msg-center> -->
   </div>
 </div>

@@ -37,7 +37,7 @@ module.exports = function (env) {
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
     devtool: 'source-map',
-
+    
     /**
      * Options affecting the output of the compilation.
      *

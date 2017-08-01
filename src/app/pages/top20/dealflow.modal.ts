@@ -25,7 +25,7 @@ interface CheckForm {
                    </div>
                   <div>
                       <label style="margin: 0px;padding-left: 15px;" for="single">Corporation Logo:</label>
-                      <input type="file" style="padding-left: 16px;display: block;padding-top: 5px;padding-bottom: 10px;" name="single" accept="image/*" (change)="changeListener($event)">            
+                      <input type="file" style="padding-left: 16px;display: block;padding-top: 5px;padding-bottom: 10px;" name="single" accept=".jpg,.jpeg,.png" (change)="changeListener($event)">            
                   </div>
                    <form #frm="ngForm" > 
                      <div *ngFor="let item of formArray; let i=index" class="col-md-6">
@@ -71,11 +71,12 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
 
     myReader.onloadend = (e) => {
       this.image = myReader.result;
-      console.log(this.image);
+      //console.log(this.image);
     }
     myReader.readAsDataURL(file);
 
   }
+
   confirm() {
     // we set dialog result as true on click on confirm button, 
     // then we can get dialog result from caller code 
@@ -84,22 +85,27 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
     }*/
       type MyArrayType = Array<{image: string, text: string, link: string, style: string}>;
       //var pdfContent: MyArrayType = [];
-      var pdfContent: any[] = [];
-
+      var pdfContent: any[] = [];      
+      
       for(var i = 0; i < this.formArray.length; i++){
         for(var j = 0; j < this.lists.length; j ++){
           if(this.formArray[i].checked == true && this.formArray[i].companyName == this.lists[j].companyName){
             //console.log(this.lists[i].thumbnail);
-            if(this.lists[i].thumbnail){
-              pdfContent.push({columns:[{width:50,stack:[{image: 'data:image/jpg;base64,'+this.lists[i].thumbnail, width: 50}]},{alignment: 'left',text: this.lists[j].companyName, style: 'title'}]})
+            var thumb: any = '';
+            if(this.lists[j].thumbnail){
+              //pdfContent.push({columns:[{width:50,stack:[{image: 'data:image/jpg;base64,'+this.lists[j].thumbnail, width: 50}]},{alignment: 'left',text: this.lists[j].companyName, style: 'title', margin: [10, 5, 0, 5]}]})
+              thumb = {columns:[{width:50,stack:[{image: 'data:image/jpg;base64,'+this.lists[j].thumbnail, width: 50}]},{alignment: 'left',text: this.lists[j].companyName, style: 'title', margin: [10, 5, 0, 5]}]}; 
             } else {
-              pdfContent.push({alignment: 'left',text: this.lists[j].companyName, style: 'titlePlain'})
+              //pdfContent.push({alignment: 'left',text: this.lists[j].companyName, style: 'titlePlain'})
+              thumb = {alignment: 'left',text: this.lists[j].companyName, style: 'titlePlain'};
             }            
-            //pdfContent.push({ image: 'data:image/png;base64,'+this.lists[i].thumbnail});
-            //pdfContent.push({ image: '', text: this.lists[j].companyName, link: '', style: 'title' })
-            pdfContent.push({ image: '', text: this.lists[j].blurb, link: '', style: 'paragraph' })
-            pdfContent.push({ image: '', text: this.lists[j].website, link: this.lists[i].website, style: 'website'})
-          } 
+
+            var row = new Array();
+            row.push([thumb,{ image: '', text: this.lists[j].blurb, link: '', style: 'paragraph' },{ image: '', text: this.lists[j].website, link: this.lists[j].website, style: 'website'}]);
+            pdfContent.push(row);
+            //pdfContent.push({ image: '', text: this.lists[j].blurb, link: '', style: 'paragraph' })
+            //pdfContent.push({ image: '', text: this.lists[j].website, link: this.lists[j].website, style: 'website'})
+          }
       }
       }
         var dateObj = new Date();
@@ -167,7 +173,13 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               alignment: 'center',
               margin: [0, 5, 0, 20]
             },
-            pdfContent
+            {
+              table: {
+                dontBreakRows: true,
+                body: pdfContent               
+              },
+              layout: 'noBorders'
+            },          
             /*,
             {
               // under NodeJS (or in case you use virtual file system provided by pdfmake)
@@ -176,6 +188,9 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               width: 200
             }*/
           ],
+          pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+            return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
+          },
           styles: {
             header: {
               font: 'FreigSanPro',
@@ -194,8 +209,7 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
-              alignment: 'left',
-              margin: [10, 20, 0, 2.5]
+              alignment: 'left'
             },
             titlePlain: {
               font: 'FreigSanPro',

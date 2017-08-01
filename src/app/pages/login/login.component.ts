@@ -33,6 +33,7 @@ export class Login implements OnInit  {
   ngOnInit() {
         // reset login status
         this.authenticationService.logout();
+
     }
 
   public onSubmit(values:Object):void {
@@ -44,8 +45,8 @@ export class Login implements OnInit  {
       console.log (this.password.value);*/
       this.loading = true;
        //this.authenticationService.login(this.model.username, this.model.password)
-       this.authenticationService.login(this.email.value, this.password.value)
-            .subscribe(result => {
+/*         this.authenticationService.login2(this.email.value, this.password.value).subscribe(result => {
+               console.log(result);
                 if (result === true) {
                     // login successful
                     this.router.navigate(['pages/startups']);
@@ -54,8 +55,33 @@ export class Login implements OnInit  {
                     this.error = 'Username or password is incorrect';
                     this.loading = false;
                 }
-            });
+            });  */
+           this.authenticationService.login(this.email.value, this.password.value)
+            .subscribe(result => {
+               console.log(result);
+                if (result === true) {
+                    // login successful
+                    this.router.navigate(['pages/startups']);
+                } else {
+                    // login failed
+                    this.error = 'Username or password is incorrect';
+                    this.loading = false;
+                }
+            });    
       
     }
+  }
+  test(){
+    this.authenticationService.login2(this.email.value, this.password.value).subscribe(result => {
+               console.log(result);
+                if (result === true) {
+                    // login successful
+                    this.router.navigate(['pages/startups']);
+                } else {
+                    // login failed
+                    this.error = 'Username or password is incorrect';
+                    this.loading = false;
+                }
+            }); 
   }
 }

@@ -12,11 +12,13 @@ export class BaPageTop {
 
   public isScrolled:boolean = false;
   public isMenuCollapsed:boolean = false;
+  public currentUser:any;
 
   constructor(private _state:GlobalState) {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   public toggleMenu() {

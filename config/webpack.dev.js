@@ -99,7 +99,7 @@ module.exports = function (options) {
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
-          'HMR': METADATA.HMR,
+          'HMR': METADATA.HMR
         }
       }),
 
@@ -148,6 +148,13 @@ module.exports = function (options) {
      * See: https://webpack.github.io/docs/webpack-dev-server.html
      */
     devServer: {
+      
+/*       https: {
+        cert: fs.readFileSync("./config/sslv3/playbook.pem"),
+        key: fs.readFileSync("./config/sslv3/playbook.pem"),
+        ca: fs.readFileSync("./config/sslv3/playbook.pem"),
+        passphrase: 'pnp4life!'
+      }, */
       port: METADATA.port,
       host: METADATA.host,
       historyApiFallback: {
@@ -160,10 +167,16 @@ module.exports = function (options) {
       //outputPath: helpers.root('dist'),
       proxy: {
       '/rest/*': {
+        //target: 'http://playbook.pnptc.com',
         target: 'http://54.145.172.103',
         secure: false,
         changeOrigin: true
-      }
+        },
+      },
+      headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
       }
     },
 

@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => System.import('./register/register.module')
   },
   {
+    path: 'verify',
+    loadChildren: () => System.import('./verify/verify.module')
+  },
+  {
     path: 'pages',
     component: Pages,
     children: [
@@ -26,7 +30,8 @@ const routes: Routes = [
       { path: 'top20lists',  loadChildren: () => System.import('./top20lists/top20lists.module') },
       { path: 'top20',  loadChildren: () => System.import('./top20/top20.module') },
       { path: 'batchlists',  loadChildren: () => System.import('./batchlists/batchlists.module') },
-      { path: 'batch',  loadChildren: () => System.import('./batch/batch.module') }
+      { path: 'batch',  loadChildren: () => System.import('./batch/batch.module') },
+      { path: 'settings',  loadChildren: () => System.import('./settings/settings.module') }
     ]
   }
 ];

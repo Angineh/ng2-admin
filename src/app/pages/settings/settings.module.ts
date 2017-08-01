@@ -3,11 +3,9 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
-import { Register } from './register.component';
-import { routing }       from './register.routing';
-
-import { RegisterService } from './register.service';
-
+import { SettingsComponent } from './settings.component';
+import { SettingsService } from './settings.service';
+import { routing } from './settings.routing';
 
 @NgModule({
   imports: [
@@ -18,10 +16,11 @@ import { RegisterService } from './register.service';
     routing
   ],
   declarations: [
-    Register
+    SettingsComponent
   ],
   providers: [
-    RegisterService
+    SettingsService
   ],
+
 })
-export default class RegisterModule {}
+export default class SettingsModule {}

@@ -280,13 +280,16 @@ export class Top20Component implements OnInit, OnDestroy  {
               //console.log(isConfirmed) 
               this.corporation = isConfirmed;
 
-          type MyArrayType = Array<{text: string, link: string, style: string}>;
-      var pdfContent: MyArrayType = [];
-
+      //type MyArrayType = Array<{text: string, link: string, style: string}>;
+      //var pdfContent: MyArrayType = [];
+      var pdfContent: any[] = []; 
       for(var i = 0; i < this.companies.length; i++){
-        pdfContent.push({ text: this.companies[i].companyName, link: '', style: 'title' })
+        var row = new Array();
+        row.push([{ text: this.companies[i].companyName, link: '', style: 'title' },{ text: this.companies[i].blurb, link: '', style: 'paragraph' },{text: this.companies[i].website, link: this.companies[i].website, style: 'website'}]);
+        pdfContent.push(row);
+        /*pdfContent.push({ text: this.companies[i].companyName, link: '', style: 'title' })
         pdfContent.push({ text: this.companies[i].blurb, link: '', style: 'paragraph' })
-        pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})
+        pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})*/
       }
       pdfMake.fonts = {
         FreigSanPro: {
@@ -314,7 +317,14 @@ export class Top20Component implements OnInit, OnDestroy  {
               alignment: 'center',
               margin: [0, 5, 0, 20]
             },
-            pdfContent/*,
+            {
+              table: {
+                dontBreakRows: true,
+                body: pdfContent               
+              },
+              layout: 'noBorders'
+            } 
+            /*,
             {
               // under NodeJS (or in case you use virtual file system provided by pdfmake)
               // you can also pass file names here
@@ -322,6 +332,9 @@ export class Top20Component implements OnInit, OnDestroy  {
               width: 200
             }*/
           ],
+          pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+            return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
+          },
           styles: {
             header: {
               font: 'FreigSanPro',

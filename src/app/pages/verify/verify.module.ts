@@ -3,10 +3,10 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
-import { Register } from './register.component';
-import { routing }       from './register.routing';
+import { Verify } from './verify.component';
+import { routing }       from './verify.routing';
 
-import { RegisterService } from './register.service';
+import { VerifyService } from './verify.service';
 
 
 @NgModule({
@@ -18,10 +18,10 @@ import { RegisterService } from './register.service';
     routing
   ],
   declarations: [
-    Register
+    Verify
   ],
   providers: [
-    RegisterService
+    VerifyService
   ],
 })
-export default class RegisterModule {}
+export default class VerifyModule {}

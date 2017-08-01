@@ -8,6 +8,7 @@ import { AuthGuard } from './_guards/index';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'verify', pathMatch: 'full', canActivate: [AuthGuard] },
   { path: '', redirectTo: 'pages', pathMatch: 'full', canActivate: [AuthGuard] },
   //{ path: '#', redirectTo: '', pathMatch: 'full', canActivate: [AuthGuard] },
   // otherwise redirect to home
