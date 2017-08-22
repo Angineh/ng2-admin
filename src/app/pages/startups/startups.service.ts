@@ -50,6 +50,23 @@ export class StartupsService {
                 }
             });
     }
+
+    getDealflowLists(){ 
+        let headers = new Headers({ 'Accept': 'application/json','Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept' });
+        let options = new RequestOptions({ headers: headers });
+        return this._http.get('/rest/plugandplay/api/v1/dealflow/lists',options).map(res => {
+                // If request fails, throw an Error that will be caught
+                if(res.status == 204) {
+                    console.log(res.status);
+                    return res;
+                } 
+                // If everything went fine, return the response
+                else {
+                return res;
+                }
+            });
+    }
+
     getTop100Lists(){ 
         let headers = new Headers({ 'Accept': 'application/json','Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept' });
         let options = new RequestOptions({ headers: headers });
@@ -91,6 +108,12 @@ export class StartupsService {
         let header = new Headers({ 'Accept': 'application/json','Content-Type':'application/json','Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS','Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'});
         let options = new RequestOptions({ headers: header });
         return this._http.post('/rest/plugandplay/api/v1/ventures/addtop20',"{\"id\":"+id+",\"listName\":\""+listName+"\"}",options);
+    }
+
+    addToDealflow(id:Number,listName:String) { 
+        let header = new Headers({ 'Accept': 'application/json','Content-Type':'application/json','Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS','Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'});
+        let options = new RequestOptions({ headers: header });
+        return this._http.post('/rest/plugandplay/api/v1/ventures/adddealflow',"{\"id\":"+id+",\"listName\":\""+listName+"\"}",options);
     }
 
     addToBatch(id:Number,listName:String) { 

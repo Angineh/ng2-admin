@@ -1,144 +1,297 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { DialogComponent, DialogService } from "ng2-bootstrap-modal";
+import {Component, ViewChild, ElementRef, OnInit, ViewEncapsulation,  OnDestroy, ViewContainerRef } from '@angular/core';
+import {Pipe, PipeTransform, SimpleChanges} from '@angular/core'
+import { Observable } from 'rxjs/Rx';
+import { ActivatedRoute } from '@angular/router';
+
+import { DealflowService } from './dealflow.service';
+import { LocalDataSource } from 'ng2-smart-table';
+import {Subscription} from 'rxjs';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-export interface CustomModal {
-  lists: any[];
-  corporation: String;
-}
-interface CheckForm {
-    companyName ? : string; // the "?" makes the property optional, 
-    checked ? : boolean; //  so you can start with an empty object
-}
-@Component({  
-    selector: 'confirm',
-    styles: [require('../css/checkbox.scss')],
-    template: `<div class="modal-dialog" style="overflow: scroll;overflow-y: auto;max-height: 90%;">
-                <div class="modal-content">
-                   <div class="modal-header">
-                     <button type="button" class="close" (click)="close()" >&times;</button>
-                     <h4 class="modal-title">Create a Dealflow!</h4>
-                   </div>
-                   <div  class="modal-body" style="padding-top:5px;padding-bottom:5px;">
-                       <label for="input01">Corporation Name:</label>
-                       <input style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" type="text" [(ngModel)]="corporation" [ngModelOptions]="{standalone: true}" class="form-control" id="input01" placeholder="Corporation Name">
-                   </div>
-                  <div>
-                      <label style="margin: 0px;padding-left: 15px;" for="single">Corporation Logo:</label>
-                      <input type="file" style="padding-left: 16px;display: block;padding-top: 5px;padding-bottom: 10px;" name="single" accept=".jpg,.jpeg,.png" (change)="changeListener($event)">            
-                  </div>
-                   <form #frm="ngForm" > 
-                     <div *ngFor="let item of formArray; let i=index" class="col-md-6">
-                     <div  class="modal-body" style="padding-top:5px;padding-bottom:5px;">
-                     
-                     <input type="checkbox" class="css-checkbox" id="{{item?.companyName}}" name={{item?.companyName}} [(ngModel)]="formArray[i].checked" value="{{item.companyName}}" >
-                     <label for="{{item?.companyName}}" name="checkbox-lbl" class="css-label lite-green-check">{{item.companyName}}</label>                                          
-                     </div>
-                     </div>
-                   </form>
-                   <div class="modal-footer">
-                     <button type="button" class="btn btn-primary" (click)="confirm()">Export</button>
-                   </div>
-                 </div>
-              </div>`
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import * as FileSaver from "file-saver";
+
+import { ModalComponent } from './export.modal';
+import { CorpModalComponent } from './corp.modal';
+import { DealflowModalComponent } from './dealflow.modal';
+import { DialogService } from "ng2-bootstrap-modal";
+
+
+@Component({
+  selector: 'dealflow',
+  encapsulation: ViewEncapsulation.None,
+  styles: [require('./dealflow.scss'),require('../css/ng2-toastr.min.scss')],
+  template: require('./dealflow.html'),
+  providers: [DealflowService]
 })
-export class DealflowModalComponent extends DialogComponent<CustomModal, CheckForm[]> implements CustomModal, OnInit {
-  lists: any[];
+
+export class DealflowComponent implements OnInit, OnDestroy  {
+  @ViewChild('input')
+  input: ElementRef;
+  companies: any[];
+  archived: any[];
+  private sub: any;
+  dealflow: Object;
+  dealflowlist: String;
+  listname: String;
   corporation: String;
-  formArray: CheckForm[] = [];
-  image: string;
-  @ViewChild('frm') form;
+  public creatingdealflow: boolean;
+  public creatingpdf: boolean;
+  public creatingcsv: boolean;
+  public error: boolean;
+  public loading: boolean;
+  public overlay: any;
 
-  constructor(dialogService: DialogService) {
-    super(dialogService);    
+  constructor(private route: ActivatedRoute,  private _dealflowService: DealflowService, public toastr: ToastsManager, vcr: ViewContainerRef, private dialogService:DialogService) {
+      this.unsetOverlay();
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      this.creatingpdf = false;
+      this.toastr.setRootViewContainerRef(vcr);
   }
+
   ngOnInit(){
-     for(var i = 0; i < this.lists.length; i++){
-      var obj:CheckForm = {};
-        obj.companyName = this.lists[i].companyName;
-        obj.checked = false;
-        this.formArray.push(obj);
-    }
+      this.sub = this.route.params.subscribe(params => {
+      this.listname = params['listName']; // (+) converts string 'id' to a number
+      this.getLists();  
+       // In a real app: dispatch action to load the details here.       //JSON.stringify(data)
+    });
+      let eventObservable = Observable.fromEvent(this.input.nativeElement, 'keyup')
+      eventObservable.subscribe();
   }
-  changeListener($event) : void {
-    this.readThis($event.target);
+  
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+  showSuccess(message: string, title: string, time: number) {
+        this.toastr.success(message, title,{toastLife: 2000});
+  }
+  showError(message: string, title: string, time: number) {
+        this.toastr.error(message, title,{toastLife: 2000});
+  }
+  showWarning(message: string, title: string, time: number) {
+        this.toastr.warning(message, title,{toastLife: time});
+  }
+  /*exportToCSV(){
+    var fields = this.exportModal();
+    var json2csv = require('json2csv');
 
+    try {
+      var result = json2csv({ data: this.companies, fields: fields });
+      //console.log(result);
+      var blob = new Blob([result], { type: 'text/csv' });
+      FileSaver.saveAs(blob, this.listname+'-Dealflow.csv');
+      this.creatingcsv = false;
+    } catch (err) {
+      // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+      // Be sure to provide fields if it is possible that your data array will be empty.
+      console.error(err);
+      this.creatingcsv = false;
+    }
+  }*/
+  exportToCSV() {
+            var fields = ['companyName', 'blurb', 'website', 'stage', 'location', 'background', 'verticals', 'competition', 'advantage', 'caseStudy', 'comments', 'pnpContact', 'contactName', 'email', 'phoneNumber', 'totalMoneyRaised', 'b2bb2c', 'employees', 'city', 'founded', 'partnerInterests', 'tags', 'materials', 'dateOfInvestment','timestamp'];
+            let disposable = this.dialogService.addDialog(ModalComponent, {
+                lists: fields
+                })
+                .subscribe( isConfirmed =>{
+                    if(isConfirmed){
+                    var exportList = new Array();
+                     for(var i = 0; i < isConfirmed.length; i++){
+                        if(isConfirmed[i].checked == true){
+                            exportList.push(isConfirmed[i].listName)                   
+                        }
+                     }
+                    
+                    var json2csv = require('json2csv');
+                    try {
+                      var result = json2csv({ data: this.companies, fields: exportList });
+                      //console.log(result);
+                      var blob = new Blob([result], { type: 'text/csv' });
+                      FileSaver.saveAs(blob, "Plug and Play - "+this.listname+' - Dealflow.csv');
+                      this.creatingcsv = false;
+                    } catch (err) {
+                      // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+                      // Be sure to provide fields if it is possible that your data array will be empty.
+                      console.error(err);
+                      this.creatingcsv = false;
+                    }
+                    }
+                });
+            
+  }
+  getLists() {
+      this.loading = true;
+      this.error = false;
+      this._dealflowService.getDealflowForList(this.listname).map(res => {
+      // If request fails, throw an Error that will be caught
+      if(res.status == 204) {
+        this.loading = false;
+        this.error = true;
+        console.log("Search did not return any results.") 
+      } else if (res.status < 200 || res.status >= 300){
+        this.loading = false;
+        throw new Error('This request has failed ' + res.status);
+      }
+      // If everything went fine, return the response
+      else {
+        this.loading = false;
+        return res.json();
+      }
+    }).subscribe(data => this.companies = data,
+      err => console.error('Error: ' + err),
+          () => console.log('Completed!')
+      );
+  }
+  setOverlay(){
+    this.overlay = {'background-color' : 'Black', 'opacity': '0.7'};
   }
 
-  readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      this.image = myReader.result;
-      //console.log(this.image);
-    }
-    myReader.readAsDataURL(file);
-
+  unsetOverlay(){
+    this.overlay = {};
   }
+  
 
-  ordinal_suffix_of(i) {
-    var j = i % 10,
-        k = i % 100;
-    if (j == 1 && k != 11) {
-        return i + "st";
-    }
-    if (j == 2 && k != 12) {
-        return i + "nd";
-    }
-    if (j == 3 && k != 13) {
-        return i + "rd";
-    }
-    return i + "th";
-  }
-
-  confirm() {
-    // we set dialog result as true on click on confirm button, 
-    // then we can get dialog result from caller code 
-   /* for(var i = 0; i < this.formArray.length; i++){
-      console.log(this.formArray[i])
-    }*/
-      type MyArrayType = Array<{image: string, text: string, link: string, style: string}>;
-      //var pdfContent: MyArrayType = [];
-      var pdfContent: any[] = [];      
-      
-      for(var i = 0; i < this.formArray.length; i++){
-        for(var j = 0; j < this.lists.length; j ++){
-          if(this.formArray[i].checked == true && this.formArray[i].companyName == this.lists[j].companyName){
-            //console.log(this.lists[i].thumbnail);
-            var thumb: any = '';
-            if(this.lists[j].thumbnail){
-              //pdfContent.push({columns:[{width:50,stack:[{image: 'data:image/jpg;base64,'+this.lists[j].thumbnail, width: 50}]},{alignment: 'left',text: this.lists[j].companyName, style: 'title', margin: [10, 5, 0, 5]}]})
-              thumb = {columns:[{width:50,stack:[{image: 'data:image/jpg;base64,'+this.lists[j].thumbnail, width: 50}]},{alignment: 'left',text: this.lists[j].companyName, style: 'title', margin: [10, 5, 0, 5]}]}; 
-            } else {
-              //pdfContent.push({alignment: 'left',text: this.lists[j].companyName, style: 'titlePlain'})
-              thumb = {alignment: 'left',text: this.lists[j].companyName, style: 'titlePlain'};
-            }            
-
-            var row = new Array();
-            row.push([thumb,{ image: '', text: this.lists[j].blurb, link: '', style: 'paragraph' },{ image: '', text: this.lists[j].website, link: this.lists[j].website, style: 'website'}]);
-            pdfContent.push(row);
-            //pdfContent.push({ image: '', text: this.lists[j].blurb, link: '', style: 'paragraph' })
-            //pdfContent.push({ image: '', text: this.lists[j].website, link: this.lists[j].website, style: 'website'})
+  removeDealflow(id:Number) {
+    this.setOverlay();
+    //console.log("Remove "+id);
+    this._dealflowService.removeFromDealflow(id,this.listname).subscribe(data => this.dealflow = data,
+    error => {
+      this.unsetOverlay();
+      this.showError("Could not remove Dealflow, please try again!", "Error", 4000)}, 
+      () =>{
+        let trigger = false;
+        for(var i = 0; i < this.companies.length; i++){
+          
+          if(this.companies[i].id == id){
+            //console.log("Delete company: "+this.companies[i].id)
+            this.companies.splice(i,1);
+            trigger = true;
           }
-      }
-      }
-        var dateObj = new Date();
-        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        var month =  monthNames[dateObj.getMonth()];
-        var year = dateObj.getFullYear().toString();
-        var day = dateObj.getDate();
-        var ordinalDay = this.ordinal_suffix_of(day);
-        var footer:any;
-        if(this.image != null){
-          footer = {
-            image: this.image,
-            maxHeight:50,
-            alignment: 'center'
-          } 
-        }else{
-          footer = {}
+          if(trigger == true){
+            for(var j = 0; j < this.companies[i].dealflow.length; j++){
+              /*console.log(this.companies[i].dealflow[j].listName) 
+              console.log(this.companies[i].dealflow[j].order)*/ 
+              if(this.companies[i].dealflow[j].listName == this.listname){
+                  this.companies[i].dealflow[j].order = this.companies[i].dealflow[j].order - 1;
+              }        
+            }
+            
+          }
+          this.unsetOverlay();
+
         }
+      }
+    );
+  }
+  changePosition(position:number, id:Number, current:number) {
+    
+    if(position > this.companies.length || position < 1){
+      this.showWarning("Please enter a number between 1 and "+this.companies.length, "", 4000);
+    } else {
+      /*console.log("{\"id\":"+id+",\"order\":"+position+"}");
+      console.log("current: "+current)*/
+      this.setOverlay();
+      this._dealflowService.movePosition("{\"id\":"+id+",\"order\":"+position+",\"listName\":\""+this.listname+"\"}").subscribe(data => this.dealflow = data,
+      error => {
+      this.unsetOverlay();
+      this.showError("Could change position, please try again!", "Error", 4000)}, 
+      () => {
+        for(var i = current; i < this.companies.length; i++ ){
+        for(var j = 0; j < this.companies[i].dealflow.length; j++){
+
+              if(this.companies[i].dealflow[j].listName == this.listname){
+                  this.companies[i].dealflow[j].order = this.companies[i].dealflow[j].order - 1;
+              }        
+            }
+      }
+      for(var j = 0; j < this.companies[current - 1].dealflow.length; j++){
+         if(this.companies[current - 1].dealflow[j].listName == this.listname){
+           this.companies[current -1 ].dealflow[j].order = position;
+         }
+      }
+      this.companies = this.moveItem(this.companies, current - 1, position-1);
+      for(var i = position; i < this.companies.length; i++){
+        for(var j = 0; j < this.companies[i].dealflow.length; j++){
+          if(this.companies[i].dealflow[j].listName == this.listname){
+                  this.companies[i].dealflow[j].order = this.companies[i].dealflow[j].order + 1;
+                  
+          }  
+        
+        }
+      }
+      
+      for(var i = 0; i < this.companies.length; i ++) {
+         for(var j = 0; j < this.companies[i].dealflow.length; j++){
+           console.log(this.companies[i].dealflow[j].venture_id + " " + this.companies[i].dealflow[j].order)
+         }
+      }
+      this.unsetOverlay();
+    }
+    );
+      
+
+    }
+    
+  }
+  moveItem(arr, old_index, new_index) {
+    while (old_index < 0) {
+        old_index += arr.length;
+    }
+    while (new_index < 0) {
+        new_index += arr.length;
+    }
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length;
+        while ((k--) + 1) {
+            arr.push(undefined);
+        }
+    }
+     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);  
+    return arr;
+  }
+  
+  createDealflow() {
+      this.creatingdealflow = true;
+      let disposable = this.dialogService.addDialog(DealflowModalComponent, {
+      lists: this.companies,
+      corporation: this.corporation
+      })
+      .subscribe( isConfirmed =>{
+          if(isConfirmed){
+              console.log(isConfirmed) 
+              //this.corporation = isConfirmed;
+            this.creatingdealflow = false;
+            this.corporation = '';
+        } else {
+          this.creatingdealflow = false;
+          this.corporation = '';
+        }
+        
+      });
+  
+}
+  
+    exportToPDF() {
+      this.creatingpdf = true;
+      let disposable = this.dialogService.addDialog(CorpModalComponent, {
+      corporation: this.corporation
+      })
+      .subscribe( isConfirmed =>{
+          if(isConfirmed){
+              //console.log(isConfirmed) 
+              this.corporation = isConfirmed;
+
+      //type MyArrayType = Array<{text: string, link: string, style: string}>;
+      //var pdfContent: MyArrayType = [];
+      var pdfContent: any[] = []; 
+      for(var i = 0; i < this.companies.length; i++){
+        var row = new Array();
+        row.push([{ text: this.companies[i].companyName, link: '', style: 'title' },{ text: this.companies[i].blurb, link: '', style: 'paragraph' },{text: this.companies[i].website, link: this.companies[i].website, style: 'website'}]);
+        pdfContent.push(row);
+        /*pdfContent.push({ text: this.companies[i].companyName, link: '', style: 'title' })
+        pdfContent.push({ text: this.companies[i].blurb, link: '', style: 'paragraph' })
+        pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})*/
+      }
       pdfMake.fonts = {
         FreigSanPro: {
           normal: 'FreigSanProLig.otf',
@@ -146,40 +299,6 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
         }
       }
       var docDefinition = {
-          pageMargins: [40, 30, 40, 80],
-          footer:
-          footer
-          /* {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                maxHeight: 50,
-                alignment: 'center'
-             }*/,
-           /*{ columns: [
-            { width: '*', text: '' },
-            {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                maxHeight: 50,
-                alignment: 'center'
-            },
-             { width: '*', text: '' }
-            ]
-           },*/
-          /*footer: {  columns: [
-            { width: '*', text: '' },
-            {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                width: 100,
-                margin: [0, 5, 0, 20]
-            },
-             { width: '*', text: '' }
-            ]
-          },*/
           defaultStyle: {
             font: 'FreigSanPro'
           },
@@ -190,8 +309,7 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               width: 200,
               alignment: 'center'
             },
-            { text: this.corporation, style: 'header' },
-            { text: month+' '+ordinalDay+', '+year, style: 'date'},
+            { text: 'Suggested Start Ups for '+this.corporation, style: 'header' },
             {
               // if you reuse the same image in multiple nodes,
               // you should put it to to images dictionary and reference it by name
@@ -206,7 +324,7 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
                 body: pdfContent               
               },
               layout: 'noBorders'
-            },          
+            } 
             /*,
             {
               // under NodeJS (or in case you use virtual file system provided by pdfmake)
@@ -223,40 +341,27 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               font: 'FreigSanPro',
               fontSize: 16,
               bold: true,
-              alignment: 'center'
-            },
-            date: {
-              font: 'FreigSanPro',
-              fontSize: 14,
-              bold: true,
               alignment: 'center',
-              margin: [0, 10, 0, 10]
             },
             title: {
               font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
-              alignment: 'left'
-            },
-            titlePlain: {
-              font: 'FreigSanPro',
-              fontSize: 12,
-              bold: true,
               alignment: 'left',
-              margin: [0, 20, 0, 2.5]
+              margin: [0, 5, 0, 2.5]
             },
             paragraph: {
               font: 'FreigSanPro',
               fontSize: 10,
               alignment: 'left',
-              margin: [0, 5, 0, 1]
+              margin: [0, 2.5, 0, 1]
             },
             website: {
               font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'left',
               color: 'blue',
-              margin: [0, 1, 0, 20]
+              margin: [0, 1, 0, 5]
             }
           },
 
@@ -274,8 +379,71 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
         var month =  monthNames[dateObj.getUTCMonth()];
         var year = dateObj.getUTCFullYear().toString();
         var date = month + year.substr(-2);
-        pdfMake.createPdf(docDefinition).download(this.corporation+' '+date+'.pdf');
-    this.result = this.formArray;
-    this.close();
+        pdfMake.createPdf(docDefinition).download(this.corporation+' Suggested Startups '+date+'.pdf');
+        this.creatingpdf = false;
+        this.corporation = '';
+        } else {
+          this.creatingpdf = false;
+          this.corporation = '';
+        }
+        
+      });
+  
+}
+
+}
+
+    
+
+@Pipe({
+  name: 'searchPipe',
+  pure: false
+})
+export class SearchPipe implements PipeTransform {
+  transform(data: any[], searchTerm: string): any[] {
+      searchTerm = searchTerm.toUpperCase();
+      return data.filter(item => {
+        return item.toUpperCase().indexOf(searchTerm) !== -1 
+      });
   }
 }
+
+@Pipe({
+    name: 'searchFilter'
+})
+
+export class PipeFilter implements PipeTransform {
+    transform(items: any[], term: any[]): any {
+        return items.filter(item => item.companyName.indexOf(term[0]) !== -1);
+    }
+}   
+
+@Pipe({
+	name: "smArraySearch"
+})
+export class SearchArrayPipe implements PipeTransform {
+	transform(list: Array<{}>, search: string): Array<{}> {
+		if (!list || !search) {
+			return list;
+		}
+
+		//return list.filter((item: { companyName: string}) => !!item.companyName.toLowerCase().match(new RegExp(search.toLowerCase()) ));
+    return list.filter((item: { companyName: string, blurb: string}) => 
+    (!!item.companyName.toLowerCase().match(new RegExp(search.toLowerCase()))) || 
+    (!!item.blurb.toLowerCase().match(new RegExp(search.toLowerCase()))) 
+    ); 
+	}
+}
+
+//, verticals: string, website: string, pnpContact: string, contactName: string, email: string, stage: string, b2bb2c: string, location: string, city: string, tags: string
+/*  ||
+    (!!item.verticals.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.website.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.pnpContact.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.contactName.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.email.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.stage.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.b2bb2c.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.location.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.city.toLowerCase().match(new RegExp(search.toLowerCase()))) ||
+    (!!item.tags.toLowerCase().match(new RegExp(search.toLowerCase())))*/

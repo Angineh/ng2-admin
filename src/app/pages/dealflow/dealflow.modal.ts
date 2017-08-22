@@ -5,6 +5,10 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 export interface CustomModal {
   lists: any[];
   corporation: String;
+  wifi: String;
+  pnpattendees: String;
+  corpattendees: String;
+  footersize: number;
 }
 interface CheckForm {
     companyName ? : string; // the "?" makes the property optional, 
@@ -20,9 +24,22 @@ interface CheckForm {
                      <h4 class="modal-title">Create a Dealflow!</h4>
                    </div>
                    <div  class="modal-body" style="padding-top:5px;padding-bottom:5px;">
+                       <div>
                        <label for="input01">Corporation Name:</label>
                        <input style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" type="text" [(ngModel)]="corporation" [ngModelOptions]="{standalone: true}" class="form-control" id="input01" placeholder="Corporation Name">
+                       <label for="input02">Wifi:</label>
+                       <input style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" type="text" [(ngModel)]="wifi" [ngModelOptions]="{standalone: true}" class="form-control" id="input02" placeholder="Wifi Information">
+                       </div>
+                       <div>
+                       <label for="input03">Pnp Attendees:</label>
+                       <textarea style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" [(ngModel)]="pnpattendees" [ngModelOptions]="{standalone: true}" class="form-control" id="input03" placeholder="Pnp Attendees"></textarea>
+                       <label for="input04">Corporate Attendees:</label>
+                       <textarea style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" type="text" [(ngModel)]="corpattendees" [ngModelOptions]="{standalone: true}" class="form-control" id="input04" placeholder="Corporate Attendees:"></textarea>
+                       </div>
+                       <label for="input05">Footer Size:</label>
+                       <input style="color: #373a3c;border: 1px solid;border-color: #00abff;line-height: inherit;" type="text" [(ngModel)]="footersize" [ngModelOptions]="{standalone: true}" class="form-control" id="input05" placeholder="Footer Size">
                    </div>
+                   
                   <div>
                       <label style="margin: 0px;padding-left: 15px;" for="single">Corporation Logo:</label>
                       <input type="file" style="padding-left: 16px;display: block;padding-top: 5px;padding-bottom: 10px;" name="single" accept=".jpg,.jpeg,.png" (change)="changeListener($event)">            
@@ -45,6 +62,10 @@ interface CheckForm {
 export class DealflowModalComponent extends DialogComponent<CustomModal, CheckForm[]> implements CustomModal, OnInit {
   lists: any[];
   corporation: String;
+  wifi: String;
+  pnpattendees: String;
+  corpattendees: String;
+  footersize: number = 7;
   formArray: CheckForm[] = [];
   image: string;
   @ViewChild('frm') form;
@@ -56,7 +77,7 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
      for(var i = 0; i < this.lists.length; i++){
       var obj:CheckForm = {};
         obj.companyName = this.lists[i].companyName;
-        obj.checked = false;
+        obj.checked = true;
         this.formArray.push(obj);
     }
   }
@@ -129,15 +150,45 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
         var year = dateObj.getFullYear().toString();
         var day = dateObj.getDate();
         var ordinalDay = this.ordinal_suffix_of(day);
+        var headerText: any;
+        if(this.wifi != null){
+          headerText = {
+            text: this.wifi, style: 'wifi'
+          }
+        }
         var footer:any;
+        var pnptext:any;
+        var corptext:any;
+        var imgtext:any;
+        if(this.pnpattendees != null){
+          pnptext = {
+            width: '*', text: this.pnpattendees, style: 'pnpattend'
+          }
+        }else{
+          pnptext = { width: '*', text: ''}
+        }
+        if(this.corpattendees != null){
+          corptext = {
+            width: '*', text: this.corpattendees, style: 'corpattend'
+          }
+        }else{
+          corptext = { width: '*', text: ''}
+        }
         if(this.image != null){
-          footer = {
+          imgtext = {
             image: this.image,
             maxHeight:50,
-            alignment: 'center'
-          } 
+            alignment: 'center',
+          }
         }else{
-          footer = {}
+          imgtext = { width: '*', text: ''}
+        }
+        footer = {
+          columns: [
+          pnptext,
+          imgtext,
+          corptext        
+          ]              
         }
       pdfMake.fonts = {
         FreigSanPro: {
@@ -147,39 +198,8 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
       }
       var docDefinition = {
           pageMargins: [40, 30, 40, 80],
-          footer:
-          footer
-          /* {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                maxHeight: 50,
-                alignment: 'center'
-             }*/,
-           /*{ columns: [
-            { width: '*', text: '' },
-            {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                maxHeight: 50,
-                alignment: 'center'
-            },
-             { width: '*', text: '' }
-            ]
-           },*/
-          /*footer: {  columns: [
-            { width: '*', text: '' },
-            {
-                // usually you would use a dataUri instead of the name for client-side printing
-                // sampleImage.jpg however works inside playground so you can play with it
-                image: this.image,
-                width: 100,
-                margin: [0, 5, 0, 20]
-            },
-             { width: '*', text: '' }
-            ]
-          },*/
+          header: headerText,
+          footer: footer,
           defaultStyle: {
             font: 'FreigSanPro'
           },
@@ -227,8 +247,8 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
             },
             date: {
               font: 'FreigSanPro',
-              fontSize: 14,
-              bold: true,
+              fontSize: 12,
+              bold: false,
               alignment: 'center',
               margin: [0, 10, 0, 10]
             },
@@ -257,7 +277,25 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
               alignment: 'left',
               color: 'blue',
               margin: [0, 1, 0, 20]
-            }
+            },
+            pnpattend: {
+              font: 'FreigSanPro',
+              fontSize: this.footersize,
+              alignment: 'left',
+              margin: [40, 0, 0, 0]
+            },
+            corpattend: {
+              font: 'FreigSanPro',
+              fontSize: this.footersize,
+              alignment: 'right',
+              margin: [0, 0, 40, 0]
+            },
+            wifi: {
+              font: 'FreigSanPro',
+              fontSize: 9,
+              alignment: 'right',
+              margin: [0, 15, 40, 0]
+            },
           },
 
           images: {

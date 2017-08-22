@@ -35,18 +35,22 @@ export class StartupsComponent implements OnInit {
   busy: Subscription;
   searchString: String
   top20lists: any[] = [];
+  dealflowlists: any[] = [];
   top100lists: any[] = [];
   batchlists: any[] = [];
   top20Exclude: TopLists[] = [];
+  dealflowExclude: TopLists[] = [];
   top100Exclude: TopLists[] = [];
   batchExclude: TopLists[] = [];
   top100: Object;
   top20: Object;
+  dealflow: Object;
   batch: Object;
 
   
   constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef){
     this.getTop20Lists();
+    this.getDealflowLists();
     this.getTop100Lists();
     this.getBatchLists();
     this.toastr.setRootViewContainerRef(vcr); 
@@ -116,7 +120,7 @@ export class StartupsComponent implements OnInit {
       } else if (res.status == 206) {
         this.loading = false;
         //this.error = true;
-        this.showWarning("The Top 20 list '"+listName+"' already has twenty entries.", "", 5000);
+        this.showWarning("The Top 20 list '"+listName+"' already has fifty entries.", "", 5000);
       } else if (res.status < 200 || res.status >= 300){
         this.loading = false;
         this.showError("Could not add to Top 20, please try again.", "", 4000);
@@ -138,6 +142,43 @@ export class StartupsComponent implements OnInit {
           () => console.log("Completed!")
       );
     }
+
+  addDealflow(id:Number,listName:String) {
+    console.log("Add "+id+ " to Dealflow list "+listName);
+    this.loading = true;
+    //this.error = false;
+    this._startupService.addToDealflow(id,listName).map(res => {
+      // If request fails, throw an Error that will be caught
+      if(res.status == 204) {
+        this.loading = false;
+        //this.error = true;
+        this.showWarning("Venture already exists in '"+listName+"'", "", 5000);
+      } else if (res.status == 206) {
+        this.loading = false;
+        //this.error = true;
+        this.showWarning("The Dealflow list '"+listName+"' already has twenty entries.", "", 5000);
+      } else if (res.status < 200 || res.status >= 300){
+        this.loading = false;
+        this.showError("Could not add to Dealflow, please try again.", "", 4000);
+        throw new Error('This request has failed ' + res.status);
+      }
+      // If everything went fine, return the response
+      else {
+        this.loading = false;
+        this.showSuccess("Successfully added to Dealflow list '" +listName+"'", "Success!", 2000);
+        var obj:TopLists = {};
+        obj.listName = listName;
+        obj.id = id;
+        this.dealflowExclude.push(obj);
+        return res.json();
+        
+      }
+    }).subscribe(data => this.dealflow = data,
+      err => console.error('Error: ' + err),
+          () => console.log("Completed!")
+      );
+    }
+
     addBatch(id:Number,listName:String) {
     console.log("Add "+id+ " to Top20 list "+listName);
     this.loading = true;
@@ -206,6 +247,44 @@ export class StartupsComponent implements OnInit {
                      for(var i = 0; i < isConfirmed.length; i++){
                         if(isConfirmed[i].checked == true){
                             this.addTop20(company.id,isConfirmed[i].listName);                    
+                        }
+                    }
+                    }
+                });
+    }
+    dealflowModal(company: any) {
+            var tmplist : any[] = [];
+            for(var i = 0; i < this.dealflowlists.length; i++){
+               tmplist[i] = this.dealflowlists[i];
+            }        
+
+            for(var i = 0; i < tmplist.length; i++){ 
+                for(var j = 0; j < company.dealflow.length; j ++)
+                if(tmplist[i].listName == company.dealflow[j].listName){
+                    tmplist.splice(i, 1);
+                }            
+            }
+            console.log("Exclude: "+JSON.stringify(this.dealflowExclude));
+            for(var i = 0; i < this.dealflowExclude.length; i++){
+                if(this.dealflowExclude[i].id == company.id){
+                    for(var j = 0; j < tmplist.length; j++){
+                        if(tmplist[j].listName == this.dealflowExclude[i].listName){
+                             tmplist.splice(j, 1);
+                        }
+                    }
+                }
+            }
+                        
+            let disposable = this.dialogService.addDialog(ModalComponent, {
+                lists: tmplist,
+                company: company,
+                title: "Dealflow"
+                })
+                .subscribe( isConfirmed =>{
+                    if(isConfirmed){
+                     for(var i = 0; i < isConfirmed.length; i++){
+                        if(isConfirmed[i].checked == true){
+                            this.addDealflow(company.id,isConfirmed[i].listName);                    
                         }
                     }
                     }
@@ -332,6 +411,29 @@ export class StartupsComponent implements OnInit {
         return res.json();
       }
     }).subscribe(data => this.top20lists = data,
+      err => console.error('Error: ' + err),
+          () => console.log('Completed!')
+      )
+  }
+  getDealflowLists() {
+      //this.loading = true;
+      //this.error = false;
+      this._startupService.getDealflowLists().map(res => {
+      // If request fails, throw an Error that will be caught
+      if(res.status == 204) {
+        //this.loading = false;
+        //this.error = true;
+        console.log("Search did not return any results.") 
+      } else if (res.status < 200 || res.status >= 300){
+        //this.loading = false;
+        throw new Error('This request has failed ' + res.status);
+      }
+      // If everything went fine, return the response
+      else {
+        //this.loading = false;
+        return res.json();
+      }
+    }).subscribe(data => this.dealflowlists = data,
       err => console.error('Error: ' + err),
           () => console.log('Completed!')
       )

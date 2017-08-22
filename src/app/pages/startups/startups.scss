@@ -124,7 +124,36 @@
   background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
-   border-width: 0px;
+  border-width: 0px;
+}
+
+.dealflowbtn {
+  background: #e8e400;
+  background-image: -webkit-linear-gradient(top, #e8e400, #bab100);
+  background-image: -moz-linear-gradient(top, #e8e400, #bab100);
+  background-image: -ms-linear-gradient(top, #e8e400, #bab100);
+  background-image: -o-linear-gradient(top, #e8e400, #bab100);
+  background-image: linear-gradient(to bottom, #e8e400, #bab100);
+  -webkit-border-radius: 8;
+  -moz-border-radius: 8;
+  border-radius: 8px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+  border-width: 0px;
+}
+
+.dealflowbtn:hover {
+  background: #dbd833;
+  background-image: -webkit-linear-gradient(top, #dbd833, #cbd934);
+  background-image: -moz-linear-gradient(top, #dbd833, #cbd934);
+  background-image: -ms-linear-gradient(top, #dbd833, #cbd934);
+  background-image: -o-linear-gradient(top, #dbd833, #cbd934);
+  background-image: linear-gradient(to bottom, #dbd833, #cbd934);
+  text-decoration: none;
+  border-width: 0px;
 }
 
 .modal {

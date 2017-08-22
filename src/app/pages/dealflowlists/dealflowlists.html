@@ -1,0 +1,86 @@
+<div class="widgets">
+
+  <div class="row">
+    <div class="col-md-12">
+
+    <ba-card baCardClass="with-scroll"> <!--<ba-card title="Explore" baCardClass="with-scroll">-->
+      <div class="row show-grid"> 
+        <div class="col-md-4">
+          <div class="form-group">
+            <input #input type="text" class="form-control" id="input03" placeholder="Search for list...">
+          </div>
+        </div>
+        <div class="col-md-8">
+        <div class="input-group">
+          <input #dealflowlist type="text" class="form-control" placeholder="Create a new dealflow list!">
+          <span class="input-group-btn">
+              <button (click)="addDealflowList(dealflowlist.value);dealflowlist.value=''" style="background-color: #282828;border-color: #ffffff;"class="btn btn-danger" type="button">Add!</button>
+          </span>
+        </div>
+        </div>
+             
+       <div class="col-md-12">
+          <div class="col-md-4" *ngFor="let list of lists | smArraySearch: input.value" style="padding:0px;">
+            <div style="margin-left:5px; margin-right:5px;">
+            <div *ngIf="!loading && !error">
+            <div [ngStyle]="overlay">
+            <div style="padding-top: 10px;padding-bottom: 25px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
+               <a [routerLink]="['/pages/dealflow', list.listName]">
+                  <div class="col-md-10" style="font-size: 18px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa;">{{list.listName}}</div>
+               </a>
+               <div class="col-md-2">
+                  <i class="fa fa-archive" (click)="archiveList(list.id)" aria-hidden="true" style="cursor: pointer;display:inline-block;color:#3c3c3c;padding-left: 10px;font-size: 18px;"></i>
+               </div>
+            </div>
+            </div>
+            </div> 
+            </div>
+          </div>
+          <div *ngIf="loading" style="margin: 0 auto;width: 100px;">
+            <div class="spinner"></div>
+          </div>
+          <div *ngIf="error" style="margin: 0 auto;width: 500px;">
+            <p>Could not find any Dealflow lists.</p>
+          </div>
+      </div>
+      </div>
+
+      </ba-card>
+      <ba-card baCardClass="with-scroll">
+          <div class="row show-grid">
+
+          <div class="col-md-12">
+          <div class="col-md-12" style="margin-bottom: 10px;padding-left: 5px">
+          <span style="letter-spacing:1px;font-family:arial;color:white;font-weight:bold;font-size:25px;">Archived Lists</span>
+          </div>
+          <div class="col-md-4" *ngFor="let list of archived" style="padding:0px;">
+            <div style="margin-left:5px; margin-right:5px;">
+            <div *ngIf="!loading && !errorArchived">
+            <div [ngStyle]="overlay">
+            <div style="padding-top: 10px;padding-bottom: 25px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
+               <a [routerLink]="['/pages/dealflow', list.listName]">
+                  <div class="col-md-10" style="font-size: 18px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa;">{{list.listName}}</div>
+               </a>
+               <div class="col-md-2">
+                  <i class="fa fa-arrow-up" (click)="unarchiveList(list.id)" aria-hidden="true" style="cursor: pointer;display:inline-block;color:#3c3c3c;padding-left: 10px;font-size: 18px;"></i>
+               </div>
+            </div>
+            </div>
+            </div>
+           
+            
+            </div>
+          </div>
+          <div *ngIf="loading" style="margin: 0 auto;width: 100px;">
+            <div class="spinner"></div>
+          </div>
+          <div *ngIf="errorArchived" style="margin: 0 auto;width: 500px;">
+            <p>Could not find any Dealflow archived lists.</p>
+          </div>
+        </div>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+
+</div>
