@@ -14,6 +14,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="companyName">Name of Company</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="text" class="form-control" maxlength="200" id="companyName" value="{{company?.companyName}}" placeholder="Company Name" [(ngModel)]="formData.companyName" name="companyName" required>
       </div>
     </div>
@@ -22,6 +23,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="blurb">Blurb of the Company (Description)</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <textarea class="form-control" maxlength="2000" id="blurb" value="{{company?.blurb}}" placeholder="Blurb" [(ngModel)]="formData.blurb" name="blurb" required></textarea>
       </div>
     </div>
@@ -29,15 +31,8 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
-        <label for="verticals">Industrial Applications and PnP Vertical</label>
-        <input type="text" class="form-control" id="verticals" value="{{company?.verticals}}" placeholder="Verticals" [(ngModel)]="formData.verticals" name="verticals" required>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
         <label for="website">Website</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="text" class="form-control" maxlength="200" id="website" value="{{company?.website}}" placeholder="Website" [(ngModel)]="formData.website" name="website" required>
       </div>
     </div>
@@ -46,6 +41,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="pnpContact">PNP Contact</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="text" class="form-control" maxlength="200" id="pnpContact" value="{{company?.pnpContact}}" placeholder="PNP Contact" [(ngModel)]="formData.pnpContact" name="pnpContact" required>
       </div>
     </div>
@@ -54,6 +50,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="contactName">Primary Contact Names</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="text" class="form-control" maxlength="200" id="contactName" value="{{company?.contactName}}" placeholder="Contact Name" [(ngModel)]="formData.contactName" name="contactName" required>
       </div>
     </div>
@@ -62,6 +59,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="email">Email</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="email" class="form-control" maxlength="200" id="email" value="{{company?.email}}" placeholder="Email" [(ngModel)]="formData.email" name="email" required>
       </div>
     </div>
@@ -69,8 +67,16 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
+        <label for="verticals">Industrial Applications and PnP Vertical</label>
+        <input type="text" class="form-control" id="verticals" value="{{company?.verticals}}" placeholder="Verticals" [(ngModel)]="formData.verticals" name="verticals">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
         <label for="phoneNumber">Phone Number</label>
-        <input type="text" class="form-control" maxlength="200" id="phoneNumber" value="{{company?.phoneNumber}}" placeholder="Phone Number" [(ngModel)]="formData.phoneNumber" name="phoneNumber" required>
+        <input type="text" class="form-control" maxlength="200" id="phoneNumber" value="{{company?.phoneNumber}}" placeholder="Phone Number" [(ngModel)]="formData.phoneNumber" name="phoneNumber">
       </div>
     </div>
   </div>
@@ -86,7 +92,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="stage">Stage of Company (Last Closed Round)</label>
-        <input type="text" class="form-control" maxlength="200" id="stage" value="{{company?.stage}}" placeholder="Stage" [(ngModel)]="formData.stage" name="stage" required>
+        <input type="text" class="form-control" maxlength="200" id="stage" value="{{company?.stage}}" placeholder="Stage" [(ngModel)]="formData.stage" name="stage">
       </div>
     </div>
   </div>
@@ -102,7 +108,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="employees">Number of Employees (Full-time/Part-time)</label>
-        <input type="text" class="form-control" maxlength="200" id="employees" value="{{company?.employees}}" placeholder="Employees" [(ngModel)]="formData.employees" name="employees" required>
+        <input type="text" class="form-control" maxlength="200" id="employees" value="{{company?.employees}}" placeholder="Employees" [(ngModel)]="formData.employees" name="employees">
       </div>
     </div>
   </div>
@@ -110,7 +116,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="location">Where is your HQ?</label>
-        <input type="text" class="form-control" maxlength="200" id="location" value="{{company?.location}}" placeholder="Location" [(ngModel)]="formData.location" name="location" required>
+        <input type="text" class="form-control" maxlength="200" id="location" value="{{company?.location}}" placeholder="Location" [(ngModel)]="formData.location" name="location">
       </div>
     </div>
   </div>
@@ -126,7 +132,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="competition">Closest Competitor</label>
-        <textarea class="form-control" maxlength="2000" id="competition" value="{{company?.competition}}" placeholder="Competition" [(ngModel)]="formData.competition" name="competition" required></textarea>
+        <textarea class="form-control" maxlength="2000" id="competition" value="{{company?.competition}}" placeholder="Competition" [(ngModel)]="formData.competition" name="competition"></textarea>
       </div>
     </div>
   </div>
@@ -134,7 +140,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="advantage">Competitive Advantage (IP's, advantage, etc.)</label>
-        <textarea class="form-control" maxlength="3000" id="advantage" value="{{company?.advantage}}" placeholder="Advantage" [(ngModel)]="formData.advantage" name="advantage" required></textarea>
+        <textarea class="form-control" maxlength="3000" id="advantage" value="{{company?.advantage}}" placeholder="Advantage" [(ngModel)]="formData.advantage" name="advantage"></textarea>
       </div>
     </div>
   </div>
@@ -142,7 +148,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="background">Founders' Background</label>
-        <textarea class="form-control" maxlength="2000" id="background" value="{{company?.background}}" placeholder="Background" [(ngModel)]="formData.background" name="background" required></textarea>
+        <textarea class="form-control" maxlength="2000" id="background" value="{{company?.background}}" placeholder="Background" [(ngModel)]="formData.background" name="background"></textarea>
       </div>
     </div>
   </div>

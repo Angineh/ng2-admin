@@ -10,6 +10,9 @@ import { routing } from './startups.routing';
 
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { ModalComponent } from './custom.modal';
+import { FilterModal } from './filter.modal';
+import { ConfirmModal } from './confirm.modal';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -18,17 +21,22 @@ import { ModalComponent } from './custom.modal';
     NgaModule,
     Ng2PaginationModule,
     routing,
-    BootstrapModalModule
+    BootstrapModalModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
-    ModalComponent
+    ModalComponent,
+    FilterModal,
+    ConfirmModal
   ],
   declarations: [
     StartupsComponent,
     SearchPipe,
     PipeFilter,
     SearchArrayPipe,
-    ModalComponent
+    ModalComponent,
+    FilterModal,
+    ConfirmModal
   ],
   bootstrap:[ StartupsComponent ],
   providers: [

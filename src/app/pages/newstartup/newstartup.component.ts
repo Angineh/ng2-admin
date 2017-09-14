@@ -3,8 +3,12 @@ import {Pipe, PipeTransform} from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { FileUploader } from 'ng2-file-upload';
 
 import { NewStartupService } from './newstartup.service';
+
+const URL = '/rest/plugandplay/api/v1/ventures/create';
+//const URL = 'http://localhost:8080/plugandplay/api/v1/ventures/create';
 
 @Component({
   selector: 'newstartup',
@@ -24,6 +28,7 @@ export class NewStartupComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public loading20: boolean;
   submitAttempt = false;
+  public uploader:FileUploader = new FileUploader({url: URL});
   
 
 constructor(private route: ActivatedRoute, private _companyService: NewStartupService, public toastr: ToastsManager, vcr: ViewContainerRef) {
@@ -40,7 +45,7 @@ constructor(private route: ActivatedRoute, private _companyService: NewStartupSe
   }
 
   showSuccess() {
-        this.toastr.success('Profile has been updated!', 'Success!', {toastLife: 2000});
+        this.toastr.success('New startup has been added!', 'Success!', {toastLife: 2000});
   }
   showError(message: string, title: string) {
         this.toastr.error(message, title,{toastLife: 2000});
@@ -49,13 +54,32 @@ constructor(private route: ActivatedRoute, private _companyService: NewStartupSe
 initSubmit(){
 	  this.submitAttempt = true;
 }
-newStartup() {
+
+newStartup(){
+  this.uploader.onBuildItemForm = (fileItem: any, form: any) => { form.append('data', JSON.stringify(this.formData) ); };   
+  this.uploader.uploadAll();   
+  this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+    //console.log("ImageUpload:uploaded:", item, status);
+    //console.log("Response: " +response)
+    if(status == 204) {
+      this.showError("Couldn't update profile picture, please try again.", "Error")
+    } else if (status < 200 || status >= 300){
+      this.showError("Couldn't update profile picture, please try again", "Error")
+    }
+    else {
+      this.showSuccess();
+      this.initForm();
+    }
+    };
+}
+
+newStartup2() {
   this._companyService.createVenture(JSON.stringify(this.formData)).map(res => {
       // If request fails, throw an Error that will be caught
       if(res.status == 204) {
-        this.showError("Couldn't find venture in database to udpate.", "Error")
+        this.showError("Couldn't not submit new starutp, please try again.", "Error")
       } else if (res.status < 200 || res.status >= 300){
-        this.showError("Could not update company, please try again.", "Error")
+        this.showError("Could not submit new startup, please try again.", "Error")
       }
       // If everything went fine, return the response
       else {

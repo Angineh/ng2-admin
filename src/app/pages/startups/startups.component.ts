@@ -7,13 +7,22 @@ import { LocalDataSource } from 'ng2-smart-table';
 import {Subscription} from 'rxjs';
 
 import { ModalComponent } from './custom.modal';
+import { FilterModal } from './filter.modal';
+import { ConfirmModal } from './confirm.modal';
 import { DialogService } from "ng2-bootstrap-modal";
 
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
+import { FormArray, FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as CryptoJS from 'crypto-js';
+
 interface TopLists {
     listName ? : String; // the "?" makes the property optional, 
     id ? : Number; //  so you can start with an empty object
+}
+interface Filter {
+    name ? : string;
+    value ? : string;
 }
 @Component({
   selector: 'startups',
@@ -26,8 +35,10 @@ interface TopLists {
 export class StartupsComponent implements OnInit {
   @ViewChild('input')
   input: ElementRef;
+  @ViewChild('filterButton') filterButton: ElementRef;
   @Input('data') companies: any[];
   asyncCompanies: Observable<any[]>;
+  //asyncCompanies: any[]; //Change from observerable to array
   p: number = 1;
   total: number;
   public loading: boolean;
@@ -46,9 +57,22 @@ export class StartupsComponent implements OnInit {
   top20: Object;
   dealflow: Object;
   batch: Object;
-
+  filters: Filter[] = [];
+  filterList: any[] = ["Tags","Stage","Verticals","Blurb","Location","Company Name","Website","PnP Contact","Contact Name","Phone Number","Total Money Raised",
+    "B2B B2C","Employees","City","Competition","Advantage","Background","Founded","Partner Interests","Case Study","Comments","Date Of Investment"];
+  filteron: boolean = false;
+  searchAttempt: boolean = false;
+  filterForm: FormGroup;
+  role: Observable<any>;
+  deleteon: boolean = false;
   
-  constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef){
+  constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, private formBuilder: FormBuilder){
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    /* var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    console.log("local storage: "+bytes.toString(CryptoJS.enc.Utf8))
+    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));  */
+    this.role = currentUser.role;
+    this.filters = new Array(0);
     this.getTop20Lists();
     this.getDealflowLists();
     this.getTop100Lists();
@@ -61,6 +85,80 @@ export class StartupsComponent implements OnInit {
       this.getPage(1);
       let eventObservable = Observable.fromEvent(this.input.nativeElement, 'keyup')
       eventObservable.subscribe();  
+      
+      this.filterForm = this.formBuilder.group({
+        'Tags': ['', Validators.required],
+        'Stage': ['', Validators.required],
+        'Verticals': ['', Validators.required],
+        'Blurb': ['', Validators.required],
+        'Location': ['', Validators.required],
+        'Company Name': ['', Validators.required],
+        'Website': ['', Validators.required],
+        'PnP Contact': ['', Validators.required],
+        'Contact Name': ['', Validators.required],
+        'Phone Number': ['', Validators.required],
+        'Total Money Raised': ['', Validators.required],
+        'B2B B2C': ['', Validators.required],
+        'Employees': ['', Validators.required],
+        'City': ['', Validators.required],
+        'Competition': ['', Validators.required],
+        'Advantage': ['', Validators.required],
+        'Background': ['', Validators.required],
+        'Founded': ['', Validators.required],
+        'Partner Interests': ['', Validators.required],
+        'Case Study': ['', Validators.required],
+        'Comments': ['', Validators.required],
+        'Date Of Investment': ['', Validators.required]
+      })      
+  }
+
+  deleteStartup(startup:any){
+    console.log("id: "+startup.id);
+    console.log("Name: "+startup.companyName);
+    console.log("role: "+this.role);
+    //console.log("index: "+JSON.stringify(this.asyncCompanies.findIndex(obj => obj == startup)));
+
+    let disposable = this.dialogService.addDialog(ConfirmModal, {
+        company: startup
+        })
+        .subscribe( isConfirmed =>{
+
+            if(isConfirmed){
+                var deleted;
+                this._startupService.deleteStartup(startup.id).map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if(res.status == 204) {
+                      this.showError("Could not delete "+startup.companyName+", please try again.", "", 4000);  
+                    } else if (res.status < 200 || res.status >= 300){
+                      this.showError("Could not delete "+startup.companyName+", please try again.", "", 4000);  
+                      throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+                      this.showSuccess("Successfully deleted startup '" +startup.companyName+"'", "Success!", 2000);
+                        //remove element from asyncCompanies
+                      
+                      this.deleteon = true;
+                      this.filterButton.nativeElement.click();                        
+                      return res.json();
+                      
+                    }
+                  }).subscribe(data => deleted = data,
+                    err => console.error('Error: ' + err),
+                        () => console.log('')
+                    );
+            }
+        });
+    
+  }
+
+  filterSearch(){
+    for(var i = 0; i < this.filters.length; i ++){      
+        if(this.filterForm.controls[this.filters[i].name].value != null){
+            this.filters[i].value = this.filterForm.controls[this.filters[i].name].value
+        }        
+    }
+    this.getPage(1);
   }
   showSuccess(message: string, title: string, time: number) {
         this.toastr.success(message, title,{toastLife: 2000});
@@ -71,6 +169,9 @@ export class StartupsComponent implements OnInit {
   showWarning(message: string, title: string, time: number) {
         this.toastr.warning(message, title,{toastLife: time});
   }
+  initSearch(){
+    this.searchAttempt = true;
+}
   addTop100(id:Number,listName:String) {
     console.log("Add "+id+ " to Top100 list "+listName);
     this.loading = true;
@@ -214,6 +315,67 @@ export class StartupsComponent implements OnInit {
           () => console.log("Completed!")
       );
     }
+    
+    removeFilter(name: any){
+        for(var i = 0; i < this.filters.length; i ++){
+            if(name == this.filters[i].name){
+                this.filters.splice(i, 1);                
+            } 
+        }
+        this.filterForm.controls[name].setValue(null);            
+    }
+
+    filterModal() {        
+        this.filterList = ["Tags","Stage","Verticals","Blurb","Location","Company Name","Website","PnP Contact", "Contact Name","Phone Number", 
+        "Total Money Raised","B2B B2C", "Employees","City","Competition","Advantage","Background","Founded","Partner Interests","Case Study",
+        "Comments","Date Of Investment"];
+        
+        if(this.filteron == true){
+            this.filteron = false;
+            return null;
+        }
+        if(this.deleteon == true){
+            this.deleteon = false;
+            this.getPage(this.p)
+            console.log("Getting page!!!")
+            return null;
+        }
+
+        for(var i = 0; i < this.filters.length; i++){
+            for(var j = 0; j < this.filterList.length; j++)
+            if(this.filters[i].name == this.filterList[j]){
+                this.filterList.splice(j,1);
+            }
+        }       
+          
+        let disposable = this.dialogService.addDialog(FilterModal, {
+            lists: this.filterList
+            })
+            .subscribe( isConfirmed =>{
+                if(isConfirmed){
+                 
+                 for(var i = 0; i < isConfirmed.length; i++){
+                    if(isConfirmed[i].checked == true){   
+                        //this.addFilter(isConfirmed[i].listName);
+                        var obj:Filter = {};
+                        obj.name = isConfirmed[i].listName;                        
+                        if(typeof this.filters == 'undefined'){
+                            this.filters = new Array(1);
+                            this.filters[0] = obj;
+                            this.filteron = true;
+                            this.filterButton.nativeElement.click();
+                          }else{
+                            this.filters.push(obj);
+                            this.filteron = true;
+                            this.filterButton.nativeElement.click();                            
+                        }             
+                    }
+                }
+                }
+
+            });            
+    }
+
     top20Modal(company: any) {
             var tmplist : any[] = [];
             for(var i = 0; i < this.top20lists.length; i++){
@@ -369,7 +531,56 @@ export class StartupsComponent implements OnInit {
     getPage(page: number) {
         this.loading = true;
         this.error = false;
-        this.asyncCompanies = this._startupService.getVenturesPage(page, this.searchString)
+        if(this.filters.length > 0){
+            this.asyncCompanies = this._startupService.getVenturesPageFilter(page, this.filters)
+                .do(res => {
+                    if(res.status == 204) {
+                      this.loading = false;
+                      this.error = true;
+                      console.log("Search did not return any results.")                  
+                    } else {
+                        this.total = res.count;
+                        this.p = page;
+                        this.loading = false;
+                    }                
+                }).map(res => res.data);
+            /* this._startupService.getVenturesPageFilter(page, this.filters).map(res => {
+                // If request fails, throw an Error that will be caught
+                if(res.status == 204) {
+                    this.loading = false;
+                    this.error = true;
+                    console.log("Search did not return any results.")                
+                } else {
+                  this.total = res.json().count;
+                  this.p = page;
+                  this.loading = false;
+                  return res.json().data;
+                  
+                }
+              }).subscribe(data => this.asyncCompanies = data,
+                err => console.error('Error: ' + err),
+                    () => console.log("")
+                ); */              
+           
+        }else{
+            /* this._startupService.getVenturesPage(page, this.searchString).map(res => {
+                // If request fails, throw an Error that will be caught
+                if(res.status == 204) {
+                    this.loading = false;
+                    this.error = true;
+                    console.log("Search did not return any results.")                
+                } else {
+                  this.total = res.json().count;
+                  this.p = page;
+                  this.loading = false;
+                  return res.json().data;
+                  
+                }
+              }).subscribe(data => this.asyncCompanies = data,
+                err => console.error('Error: ' + err),
+                    () => console.log("")
+                );  */
+            this.asyncCompanies = this._startupService.getVenturesPage(page, this.searchString)
             .do(res => {
                 if(res.status == 204) {
                   this.loading = false;
@@ -383,6 +594,7 @@ export class StartupsComponent implements OnInit {
                 
             })
             .map(res => res.data);
+        }            
     }
 
     luceneSearch(event: any){

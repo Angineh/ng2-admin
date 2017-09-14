@@ -168,6 +168,7 @@ module.exports = function (options) {
       proxy: {
       '/rest/*': {
         //target: 'http://playbook.pnptc.com',
+        //target: 'http://localhost',
         target: 'http://54.145.172.103',
         secure: false,
         changeOrigin: true

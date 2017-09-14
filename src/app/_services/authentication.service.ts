@@ -3,15 +3,20 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 //import { Https } from '@angular/https';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
+import * as CryptoJS from 'crypto-js';
  
 @Injectable()
 export class AuthenticationService {
     public token: string;
+    
 
     constructor(private http: Http) {
         // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
+        // Decrypt 
+        /* var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+        var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); */
+        /* var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.token = currentUser && currentUser.token; */
 
         
     }
@@ -49,8 +54,13 @@ export class AuthenticationService {
                     // set token property
                     this.token = token;
                     // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, token: token }));
- 
+                    // Encrypt
+                    /* let ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, token: token }), 'pnp4life!');
+                    localStorage.setItem('currentUser', ciphertext); */                    
+                    localStorage.setItem('currentUser', JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, token: token }))
+                    /* var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+                    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                    console.log("Current User: "+JSON.stringify(currentUser)); */
                     // return true to indicate successful login
                     return true;
                 } else {

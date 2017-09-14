@@ -216,6 +216,73 @@ exportToPDF() {
     summarySize = 10;
   }  
   }
+  var blurbFinal: any;
+  if(this.company.blurb == null || this.company.blurb == ""){
+    blurbFinal = "Information not provided by the startup"
+  }else{
+    blurbFinal = this.company.blurb;
+  }
+  var verticalsFinal: any;
+  if(this.company.verticals == null || this.company.verticals == ""){
+    verticalsFinal = "Information not provided by the startup"
+  }else{
+    verticalsFinal = this.company.verticals;
+  }
+  var headquartesFinal: any;
+  if(this.company.city == null || this.company.city == ""){
+    headquartesFinal = "Information not provided by the startup"
+  }else{
+    headquartesFinal = this.company.city;
+  }
+  var stageFinal: any;
+  if(this.company.stage == null || this.company.stage == ""){
+    stageFinal = "Information not provided by the startup"
+  }else{
+    stageFinal = this.company.stage;
+  }
+  var employeesFinal: any;
+  if(this.company.employees == null || this.company.employees == ""){
+    employeesFinal = "Information not provided by the startup"
+  }else{
+    employeesFinal = this.company.employees;
+  }
+  var raisedFinal: any;
+  if(this.company.totalMoneyRaised == null || this.company.totalMoneyRaised == ""){
+    raisedFinal = "Information not provided by the startup"
+  }else{
+    raisedFinal = this.company.totalMoneyRaised;
+  }
+  var teamFinal: any;
+  if(this.company.background == null || this.company.background == ""){
+    teamFinal = "Information not provided by the startup"
+  }else{
+    teamFinal = this.company.background;
+  }
+  var compadvFinal: any;
+  if(this.company.advantage == null || this.company.advantage == ""){
+    compadvFinal = "Information not provided by the startup"
+  }else{
+    compadvFinal = this.company.advantage;
+  }
+  var casestudyFinal: any;
+  if(this.company.caseStudy == null || this.company.caseStudy == ""){
+    casestudyFinal = "Information not provided by the startup"
+  }else{
+    casestudyFinal = this.company.caseStudy;
+  }
+  var websiteFinal: any;
+  if(this.company.website == null || this.company.website == ""){
+    websiteFinal = "Information not provided by the startup"
+  }else{
+    websiteFinal = this.company.website;
+  }
+  var tagsFinal: any;  
+  if(this.company.tags == null || this.company.tags == ""){
+    tagsFinal = "Information not provided by the startup"
+  }else{
+    tagsFinal = this.company.tags;
+  }
+
   pdfMake.fonts = {
     FreigSanPro: {
       normal: 'FreigSanProLig.otf',
@@ -244,7 +311,7 @@ exportToPDF() {
       }]},{
         columns: [{    
             width: '*',          
-            text: this.company.verticals,
+            text: verticalsFinal,
             style: 'verticle'
         },{
           width: '*',
@@ -267,7 +334,7 @@ exportToPDF() {
     ]},{
     columns: [{width:'*',margin: [10,10,20,0],text: 'SUMMARY', style: 'titleBig'}],
     },{
-    columns: [{width:'*',margin: [10,5,20,0],text: this.company.blurb, style: 'paragraphSummary'}]
+    columns: [{width:'*',margin: [10,5,20,0],text: blurbFinal, style: 'paragraphSummary'}]
     },
     {
       columns: [{
@@ -284,7 +351,7 @@ exportToPDF() {
 						},
 						{
 							border: [true, true, false, true],
-              text: this.company.location,
+              text: headquartesFinal,
               style: 'paragraph'
               
             }
@@ -298,7 +365,7 @@ exportToPDF() {
 						},
 						{
 							border: [true, true, false, true],
-							text: this.company.stage,
+							text: stageFinal,
               style: 'paragraph'
             }
           ],
@@ -311,7 +378,7 @@ exportToPDF() {
 						},
 						{
 							border: [true, true, false, true],
-							text: this.company.employees,
+							text: employeesFinal,
               style: 'paragraph'
             }
           ],
@@ -324,7 +391,7 @@ exportToPDF() {
 						},
 						{
 							border: [true, true, false, true],
-							text: this.company.totalMoneyRaised,
+							text: raisedFinal,
               style: 'paragraph'
             }
           ],
@@ -337,7 +404,7 @@ exportToPDF() {
 						},
 						{
 							border: [true, true, false, true],
-							text: this.company.background,
+							text: teamFinal,
               style: 'paragraphTeam'
             }
           ]
@@ -373,7 +440,7 @@ exportToPDF() {
               },
               {
                 border: [true, true, false, true],
-                text: this.company.advantage,
+                text: compadvFinal,
                 style: 'paragraphAdv'
                 
               }
@@ -387,7 +454,7 @@ exportToPDF() {
               },
               {
                 border: [true, true, false, true],
-                text: this.company.caseStudy,
+                text: casestudyFinal,
                 style: 'paragraphCase'
               }
             ]
@@ -414,7 +481,7 @@ exportToPDF() {
     },{
       columns: [{width:'*',margin: [10,10,20,0],text: 'COMPANY WEBSITE', style: 'titleBigBlue'},{width:'*',margin: [10,10,20,0],text: 'TAGS', style: 'titleBigBlue'}],      
     },{
-      columns: [{width:'*',margin: [11,0,20,0],text: this.company.website, style: 'paragraphBlue'},{width:'*',margin: [11,0,20,0],text: this.company.tags, style: 'paragraphBlue'}],      
+      columns: [{width:'*',margin: [11,0,20,0],text: websiteFinal, style: 'paragraphBlue'},{width:'*',margin: [11,0,20,0],text: tagsFinal, style: 'paragraphBlue'}],      
     }
     ],    
 /*     pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {

@@ -4,9 +4,32 @@
     <div class="col-md-12">
 
     <ba-card baCardClass="with-scroll"> <!--<ba-card title="Explore" baCardClass="with-scroll">-->
-      <div class="form-group">
-        <input #input type="text" (keyup.enter)="luceneSearch($event)" class="form-control form-control-rounded" id="input03" placeholder="Search for...">        
+      <div class="form-group"> 
+        <input #input type="text" [hidden]="filters?.length > 0" (keyup.enter)="luceneSearch($event)" class="form-control form-control-rounded" id="input03" placeholder="Search for...">
       </div>
+      <div style="margin-bottom: 5px;">
+        <div #filterButton style="border-radius: 9px;display: inline;border: 1px solid rgba(255, 255, 255, .5);padding: 3px 5px 3px 5px;cursor: pointer;"(click)="filterModal()"> 
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          <p style="display:inline">Add Filter</p>
+        </div>
+      </div>
+
+      <!-- <form #filterForm="ngForm" (ngSubmit)="filterSearch(filterForm)"> -->
+      <form [formGroup]="filterForm" (ngSubmit)="filterSearch(filterForm)">
+        <div class="row show-grid">
+          <div class="col-md-3" style="margin-top:5px;margin-bottom:5px;" *ngFor="let filter of filters;">
+            <div class="col-md-12" style="padding-left:0px;padding-right:2px;"> 
+              <!-- <p style="display:inline">{{filter.name}}</p> -->
+             <div class="form-group" style="margin-bottom:0px;">
+                  <label style="margin-bottom: 0px;margin-bottom: 0px;margin-left: 3px;">{{filter.name}}</label>
+                  <i (click)="removeFilter(filter.name)" style="cursor: pointer;float:right;margin-right: 1px;margin-top: 2px;" class="fa fa-window-close" aria-hidden="true"></i>
+                  <input type="text" class="form-control" [formControlName]="filter.name" maxlength="200" name="{{filter.name}}"> <!-- [(ngModel)]="filter.name" -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <button style="margin-top:3px;margin-bottom:3px;" *ngIf="filters?.length > 0" type="submit" (click)="initSearch()" class="btn btn-primary">Search</button>
+      </form>
 
         <div class="row show-grid">
           <div class="col-md-10">
@@ -45,6 +68,10 @@
                   <button class="top100btn" (click)="top100Modal(obj)">100</button>
                   <button class="batchbtn" (click)="batchModal(obj)">Batch</button>
                   <button class="dealflowbtn" (click)="dealflowModal(obj)">Dealflow</button>
+                  <div  *ngIf="role=='admin'"  style="display:inline;float:right;">
+                    <a class="deleteStartup" href="javascript:void(0)" (click)="deleteStartup(obj)">
+                    <span title="Delete startup"><i style="color:black" class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                  </div>
               </div>
               <div *ngIf="obj?.pnpContact" style="font-size: 10px; color: #000000; opacity: .38;">Account Manager:</div>
               <div *ngIf="obj?.pnpContact" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.pnpContact}}</div>
