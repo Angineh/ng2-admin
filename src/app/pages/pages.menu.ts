@@ -2,7 +2,7 @@ export const PAGES_MENU = [
   {
     path: 'pages',
     children: [
-      {
+/*       {
         path: 'dashboard',
         data: {
           menu: {
@@ -13,7 +13,7 @@ export const PAGES_MENU = [
             order: 0
           }
         }
-      },
+      }, */
       {
         path: 'startups',  // path for our page
         data: { // custom menu declaration

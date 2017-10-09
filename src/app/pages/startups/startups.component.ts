@@ -67,10 +67,9 @@ export class StartupsComponent implements OnInit {
   deleteon: boolean = false;
   
   constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, private formBuilder: FormBuilder){
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    /* var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
-    console.log("local storage: "+bytes.toString(CryptoJS.enc.Utf8))
-    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));  */
+    //var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
     this.role = currentUser.role;
     this.filters = new Array(0);
     this.getTop20Lists();
@@ -322,7 +321,10 @@ export class StartupsComponent implements OnInit {
                 this.filters.splice(i, 1);                
             } 
         }
-        this.filterForm.controls[name].setValue(null);            
+        this.filterForm.controls[name].setValue(null);
+        if(this.filters.length == 0){
+            this.getPage(1);
+        }          
     }
 
     filterModal() {        
@@ -337,7 +339,7 @@ export class StartupsComponent implements OnInit {
         if(this.deleteon == true){
             this.deleteon = false;
             this.getPage(this.p)
-            console.log("Getting page!!!")
+            //console.log("Getting page!!!")
             return null;
         }
 
@@ -600,6 +602,9 @@ export class StartupsComponent implements OnInit {
     luceneSearch(event: any){
         this.searchString = event.target.value;
         if(this.searchString.length > 2){
+            this.getPage(1);
+        }
+        if(this.searchString.length == 0){
             this.getPage(1);
         }
     }

@@ -71,7 +71,7 @@ export class Login implements OnInit  {
       
     }
   }
-  test(){
+/*   test(){
     this.authenticationService.login2(this.email.value, this.password.value).subscribe(result => {
                console.log(result);
                 if (result === true) {
@@ -83,5 +83,5 @@ export class Login implements OnInit  {
                     this.loading = false;
                 }
             }); 
-  }
+  } */
 }

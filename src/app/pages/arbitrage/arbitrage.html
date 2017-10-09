@@ -1,0 +1,106 @@
+<div class="widgets">
+  <ba-card title="Arbitrage" baCardClass="with-scroll">
+  
+  <div class="row">
+<!--       <div class="col-sm-12">
+        <span class="input-group-btn">
+          <button (click)="getPoloniex()" style="background-color: #282828;border-color: #ffffff;"class="btn btn-danger" type="button">Get Poloniex!</button>
+        </span>      
+      </div> -->
+      <div class="col-md-4">
+      <div class="horizontal-scroll">
+          <table class="table table-hover">
+            <thead>
+            <tr class="black-muted-bg">            
+              <th>Exchange</th>
+              <th class="align-right">BTC Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="no-top-border">
+              <td>Poloniex</td>
+              <td *ngIf="poloniexBTC?.USD" class="align-right">${{poloniexBTC.USD}}</td>
+            </tr>
+            <tr class="no-top-border">
+                <td>Cex.io</td>
+                <td *ngIf="cexioBTC?.USD" class="align-right">${{cexioBTC.USD}}</td>
+            </tr>
+            <tr class="no-top-border">
+                <td>Kraken</td>
+                <td *ngIf="krakenBTC?.USD" class="align-right">${{krakenBTC.USD}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+              <tr class="black-muted-bg">            
+                <th>Lowest Price</th>
+                <th>Highest Price</th>
+                <th class="align-right">Percent Increase</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="no-top-border">
+                <td *ngIf="min?.price" class="align-right">{{min.exchange}}:    ${{min.price}}</td>
+                <td *ngIf="max?.price" class="align-right">{{max.exchange}}:    ${{max.price}}</td>
+                <td *ngIf="percentIncrease" class="align-right">%{{percentIncrease | number : '1.2-2'}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <div class="horizontal-scroll">
+          <table class="table table-hover">
+            <thead>
+            <tr class="black-muted-bg">            
+              <th>Exchange</th>
+              <th class="align-right">ETH Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="no-top-border">
+              <td>Poloniex</td>
+              <td *ngIf="poloniexETH?.USD" class="align-right">${{poloniexETH.USD}}</td>
+            </tr>
+            <tr class="no-top-border">
+                <td>Cex.io</td>
+                <td *ngIf="cexioETH?.USD" class="align-right">${{cexioETH.USD}}</td>
+            </tr>
+            <tr class="no-top-border">
+                <td>Kraken</td>
+                <td *ngIf="krakenETH?.USD" class="align-right">${{krakenETH.USD}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+              <tr class="black-muted-bg">            
+                <th>Lowest Price</th>
+                <th>Highest Price</th>
+                <th class="align-right">Percent Increase</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="no-top-border">
+                <td *ngIf="minETH?.price" class="align-right">{{minETH.exchange}}:    ${{minETH.price}}</td>
+                <td *ngIf="maxETH?.price" class="align-right">{{maxETH.exchange}}:    ${{maxETH.price}}</td>
+                <td *ngIf="percentIncreaseETH" class="align-right">%{{percentIncreaseETH | number : '1.2-2'}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </ba-card>
+</div>

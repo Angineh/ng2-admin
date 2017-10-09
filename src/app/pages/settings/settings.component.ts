@@ -5,6 +5,7 @@ import {Pipe, PipeTransform} from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import * as CryptoJS from 'crypto-js';
 
 import { SettingsService } from './settings.service';
 
@@ -32,7 +33,7 @@ export class SettingsComponent implements OnInit {
   public repeatPassword:AbstractControl;
   public passwords:FormGroup;
   public submitted:boolean = false;
-
+  role: Observable<any>;
   
 
 constructor(fb:FormBuilder, private route: ActivatedRoute, private _userService: SettingsService, public toastr: ToastsManager, vcr: ViewContainerRef) {
@@ -52,7 +53,9 @@ constructor(fb:FormBuilder, private route: ActivatedRoute, private _userService:
       this.repeatPassword = this.passwords.controls['repeatPassword'];
       this._userService = _userService;    
       this.toastr.setRootViewContainerRef(vcr);   
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+      this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+      this.role = this.currentUser.role;
       
 
 }

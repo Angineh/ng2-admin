@@ -19,7 +19,7 @@ const routes: Routes = [
     component: Pages,
     children: [
       { path: '', redirectTo: 'startups', pathMatch: 'full' },
-      { path: 'dashboard', loadChildren: () => System.import('./dashboard/dashboard.module') },
+      //{ path: 'dashboard', loadChildren: () => System.import('./dashboard/dashboard.module') },
       { path: 'startups',  loadChildren: () => System.import('./startups/startups.module') },
       { path: 'newstartup',  loadChildren: () => System.import('./newstartup/newstartup.module') },
       { path: 'company',  loadChildren: () => System.import('./company/company.module') },
@@ -33,7 +33,9 @@ const routes: Routes = [
       { path: 'dealflow',  loadChildren: () => System.import('./dealflow/dealflow.module') },
       { path: 'batchlists',  loadChildren: () => System.import('./batchlists/batchlists.module') },
       { path: 'batch',  loadChildren: () => System.import('./batch/batch.module') },
-      { path: 'settings',  loadChildren: () => System.import('./settings/settings.module') }
+      { path: 'settings',  loadChildren: () => System.import('./settings/settings.module') },
+      { path: 'admin',  loadChildren: () => System.import('./admin/admin.module') },
+      //{ path: 'arbitrage',  loadChildren: () => System.import('./arbitrage/arbitrage.module') }
     ]
   }
 ];
