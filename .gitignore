@@ -32,7 +32,6 @@ Thumbs.db
 
 # Node Files #
 /node_modules/*
-#!/node_modules/ng2-smart-table
 /bower_components
 npm-debug.log
 

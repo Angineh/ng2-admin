@@ -340,7 +340,7 @@ exportToPDF() {
       columns: [{
       margin: [10,10,10,0],
       table: {
-        widths: [85, 250],
+        widths: [90, 245],
         body: [
 					[
 						{

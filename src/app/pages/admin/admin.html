@@ -78,7 +78,7 @@
               <th>Role</th>
             </tr>
             <tr *ngFor="let obj of asyncUsers | async | paginate: { id: 'server', itemsPerPage: 10, currentPage: p, totalItems: total }">
-                <td *ngIf="!loading && !error"><a><i style="padding-left: 10px;padding-right:5px;" class="ion-edit"></i></a><a><i style="padding-left:5px; padding-right:10px;" class="ion-trash-a"></i></a></td>
+                <td *ngIf="!loading && !error"><a href="javascript:void(0)" (click)="editUser(obj)"><i style="color:white;cursor:pointer;padding-left: 10px;padding-right:5px;" class="ion-edit"></i></a><a href="javascript:void(0)" (click)="deleteUser(obj)"><i style="color:white;cursor:pointer;padding-left:10px; padding-right:10px;" class="ion-trash-a"></i></a></td>
                 <td *ngIf="!loading && !error">{{obj.name}}</td>
                 <td *ngIf="!loading && !error">{{obj.email}}</td> 
                 <td *ngIf="!loading && !error">{{obj.role}}</td>

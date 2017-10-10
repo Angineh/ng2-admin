@@ -112,9 +112,9 @@ export class StartupsComponent implements OnInit {
   }
 
   deleteStartup(startup:any){
-    console.log("id: "+startup.id);
-    console.log("Name: "+startup.companyName);
-    console.log("role: "+this.role);
+    //console.log("id: "+startup.id);
+    //console.log("Name: "+startup.companyName);
+    //console.log("role: "+this.role);
     //console.log("index: "+JSON.stringify(this.asyncCompanies.findIndex(obj => obj == startup)));
 
     let disposable = this.dialogService.addDialog(ConfirmModal, {

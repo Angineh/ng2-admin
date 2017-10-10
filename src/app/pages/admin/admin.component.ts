@@ -12,6 +12,8 @@ import { AdminService } from './admin.service';
 import { DialogService } from "ng2-bootstrap-modal";
 
 import { FilterModal } from './filter.modal';
+import { ConfirmModal } from './confirm.modal';
+import { EditModal } from './edit.modal';
 
 interface Filter {
   name ? : string;
@@ -38,6 +40,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   filters: Filter[] = [];
   filterList: any[] = ["Name","Email","Role"];
   filteron: boolean = false;
+  useron: boolean = false;
   filterForm: FormGroup;
   deleteon: boolean = false;
   p: number = 1;
@@ -106,6 +109,63 @@ constructor(private route: ActivatedRoute, private _adminService: AdminService, 
     this.getPage(1);
   }
 
+  editUser(user:any){
+
+    let disposable = this.dialogService.addDialog(EditModal, {
+        obj: user
+        })
+        .subscribe( isConfirmed =>{
+            if(isConfirmed == 1){
+                this.showSuccess("Successfully updated user '" +user.name+"'", "Success!", 2000);
+                this.useron = true;
+                this.filterButton.nativeElement.click();
+            }else if(isConfirmed == 2){
+                this.showWarning("Could not update "+user.name+", please try again.", "", 4000);
+            }
+        });
+  }
+
+  deleteUser(user:any){
+    //console.log("id: "+user.id);
+    //console.log("Name: "+user.name);
+    //console.log("role: "+this.role);
+    //console.log("index: "+JSON.stringify(this.asyncCompanies.findIndex(obj => obj == startup)));
+
+    let disposable = this.dialogService.addDialog(ConfirmModal, {
+        obj: user
+        })
+        .subscribe( isConfirmed =>{
+
+            if(isConfirmed){
+                var deleted;
+                this._adminService.deleteUser(user.id).map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if(res.status == 204) {
+                      this.showError("Could not delete "+user.name+", please try again.", "", 4000);  
+                    } else if (res.status < 200 || res.status >= 300){
+                      this.showError("Could not delete "+user.name+", please try again.", "", 4000);  
+                      throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+                      this.showSuccess("Successfully deleted user '" +user.name+"'", "Success!", 2000);
+                        //remove element from asyncCompanies
+                      
+                      this.deleteon = true;
+                      this.filterButton.nativeElement.click();                        
+                      return res.json();
+                      
+                    }
+                  }).subscribe(data => deleted = data,
+                    err => console.error('Error: ' + err),
+                        () => console.log('')
+                            
+                    );
+            }
+        });
+    
+  }
+
   removeFilter(name: any){
     for(var i = 0; i < this.filters.length; i ++){
         if(name == this.filters[i].name){
@@ -123,6 +183,11 @@ filterModal() {
     
     if(this.filteron == true){
         this.filteron = false;
+        return null;
+    }
+    if(this.useron == true){
+        this.useron = false;
+        this.getPage(1);
         return null;
     }
     if(this.deleteon == true){
@@ -236,12 +301,14 @@ addUser() {
         this.loadingUser = false;
         this.showSuccess("Successfully added new user!", "Success!", 2000);
         this.initUserForm();
+        this.useron = true;
+        this.filterButton.nativeElement.click(); 
         return res.json();
         
       }
     }).subscribe(data => this.user = data,
       err => console.error('Error: ' + err),
-          () => console.log()
+          () => this.loadingUser = false
     );
  }
 

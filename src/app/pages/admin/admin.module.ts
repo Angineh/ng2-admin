@@ -2,7 +2,6 @@ import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { FileSelectDirective } from 'ng2-file-upload';
 import { Ng2PaginationModule } from 'ng2-pagination'; 
 
 import { AdminComponent } from './admin.component';
@@ -11,6 +10,8 @@ import { routing } from './admin.routing';
 
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { FilterModal } from './filter.modal';
+import { ConfirmModal } from './confirm.modal';
+import { EditModal } from './edit.modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
@@ -27,12 +28,15 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     Ng2SmartTableModule
   ],
   entryComponents: [
-    FilterModal
+    FilterModal,
+    ConfirmModal,
+    EditModal
   ],
   declarations: [
     AdminComponent,
-    FileSelectDirective,
-    FilterModal
+    FilterModal,
+    ConfirmModal,
+    EditModal
   ],
   bootstrap:[ AdminComponent ],
   providers: [
