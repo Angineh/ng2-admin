@@ -283,12 +283,18 @@ exportToPDF() {
     tagsFinal = this.company.tags;
   }
 
-  pdfMake.fonts = {
-    FreigSanPro: {
-      normal: 'FreigSanProLig.otf',
-      bold: 'FreigSanProSem.otf'
+/*   pdfMake.fonts = {
+    DINPro: {
+      normal: 'DINPro.otf',
+      bold: 'DINPro-Bold.otf'
     }
-  }
+  } */
+  pdfMake.fonts = {
+        FreigSanPro: {
+          normal: 'FreigSanProLig.otf',
+          bold: 'FreigSanProSem.otf'
+        }
+  } 
   var dd = {
     pageSize: 'A4',
     pageOrientation: 'landscape',

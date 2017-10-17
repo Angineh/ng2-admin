@@ -190,19 +190,19 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
           corptext        
           ]              
         }
-      pdfMake.fonts = {
+      /* pdfMake.fonts = {
         FreigSanPro: {
           normal: 'FreigSanProLig.otf',
           bold: 'FreigSanProSem.otf'
         }
-      }
+      } */
       var docDefinition = {
           pageMargins: [40, 30, 40, 80],
           header: headerText,
           footer: footer,
-          defaultStyle: {
+          /* defaultStyle: {
             font: 'FreigSanPro'
-          },
+          }, */
           content: [
             {
               // if you specify width, image will scale proportionally
@@ -240,58 +240,58 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
           },
           styles: {
             header: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 16,
               bold: true,
               alignment: 'center'
             },
             date: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: false,
               alignment: 'center',
               margin: [0, 10, 0, 10]
             },
             title: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left'
             },
             titlePlain: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left',
               margin: [0, 20, 0, 2.5]
             },
             paragraph: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 10,
               alignment: 'left',
               margin: [0, 5, 0, 1]
             },
             website: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'left',
               color: 'blue',
               margin: [0, 1, 0, 20]
             },
             pnpattend: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: this.footersize,
               alignment: 'left',
               margin: [40, 0, 0, 0]
             },
             corpattend: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: this.footersize,
               alignment: 'right',
               margin: [0, 0, 40, 0]
             },
             wifi: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'right',
               margin: [0, 15, 40, 0]

@@ -139,12 +139,12 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
         }else{
           footer = {}
         }
-      pdfMake.fonts = {
+      /* pdfMake.fonts = {
         FreigSanPro: {
           normal: 'FreigSanProLig.otf',
           bold: 'FreigSanProSem.otf'
         }
-      }
+      } */
       var docDefinition = {
           pageMargins: [40, 30, 40, 80],
           footer:
@@ -180,9 +180,9 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
              { width: '*', text: '' }
             ]
           },*/
-          defaultStyle: {
+          /* defaultStyle: {
             font: 'FreigSanPro'
-          },
+          }, */
           content: [
             {
               // if you specify width, image will scale proportionally
@@ -220,39 +220,39 @@ export class DealflowModalComponent extends DialogComponent<CustomModal, CheckFo
           },
           styles: {
             header: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 16,
               bold: true,
               alignment: 'center'
             },
             date: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 14,
               bold: true,
               alignment: 'center',
               margin: [0, 10, 0, 10]
             },
             title: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left'
             },
             titlePlain: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left',
               margin: [0, 20, 0, 2.5]
             },
             paragraph: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 10,
               alignment: 'left',
               margin: [0, 5, 0, 1]
             },
             website: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'left',
               color: 'blue',

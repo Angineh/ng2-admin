@@ -292,16 +292,16 @@ export class DealflowComponent implements OnInit, OnDestroy  {
         pdfContent.push({ text: this.companies[i].blurb, link: '', style: 'paragraph' })
         pdfContent.push({text: this.companies[i].website, link: this.companies[i].website, style: 'website'})*/
       }
-      pdfMake.fonts = {
+      /* pdfMake.fonts = {
         FreigSanPro: {
           normal: 'FreigSanProLig.otf',
           bold: 'FreigSanProSem.otf'
         }
-      }
+      } */
       var docDefinition = {
-          defaultStyle: {
+          /* defaultStyle: {
             font: 'FreigSanPro'
-          },
+          }, */
           content: [
             {
               // if you specify width, image will scale proportionally
@@ -338,26 +338,26 @@ export class DealflowComponent implements OnInit, OnDestroy  {
           },
           styles: {
             header: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 16,
               bold: true,
               alignment: 'center',
             },
             title: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 12,
               bold: true,
               alignment: 'left',
               margin: [0, 5, 0, 2.5]
             },
             paragraph: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 10,
               alignment: 'left',
               margin: [0, 2.5, 0, 1]
             },
             website: {
-              font: 'FreigSanPro',
+              //font: 'FreigSanPro',
               fontSize: 9,
               alignment: 'left',
               color: 'blue',
