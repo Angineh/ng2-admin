@@ -66,7 +66,7 @@
     "ng2-uploader": "^1.1.0",
     "normalize.css": "^4.1.1",
     "officegen": "^0.4.5",
-    "pdfmake": "^0.1.28",
+    "pdfmake": "0.1.28",
     "postcss-load-config": "1.0.0",
     "postcss-loader": "1.0.0",
     "rxjs": "5.0.0-rc.4",
