@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => System.import('./verify/verify.module')
   },
   {
+    path: 'forgotpass',
+    loadChildren: () => System.import('./forgotpass/forgotpass.module')
+  },
+  {
     path: 'pages',
     component: Pages,
     children: [
@@ -34,7 +38,7 @@ const routes: Routes = [
       { path: 'batchlists',  loadChildren: () => System.import('./batchlists/batchlists.module') },
       { path: 'batch',  loadChildren: () => System.import('./batch/batch.module') },
       { path: 'settings',  loadChildren: () => System.import('./settings/settings.module') },
-      { path: 'admin',  loadChildren: () => System.import('./admin/admin.module') },
+      { path: 'admin',  loadChildren: () => System.import('./admin/admin.module') }
       //{ path: 'arbitrage',  loadChildren: () => System.import('./arbitrage/arbitrage.module') }
     ]
   }

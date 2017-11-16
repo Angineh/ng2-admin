@@ -74,7 +74,7 @@ export class EditModal extends DialogComponent<CustomModal, number> implements C
     this._adminService = _adminService;
   }
   ngOnInit(){
-    console.log(this.obj);
+    //console.log(this.obj);
     this.name = this.obj.name;
     this.email = this.obj.email;
     this.role = this.obj.role;

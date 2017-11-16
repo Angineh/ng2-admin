@@ -152,6 +152,10 @@ export class BaMenuService {
                   loadChildren: () => System.import('../../../pages/verify/verify.module')
                 },
                 {
+                  path: 'forgotpass',
+                  loadChildren: () => System.import('./forgotpass/forgotpass.module')
+                },
+                {
                   path: 'pages',
                   component: Pages,
                   children: [
@@ -177,6 +181,10 @@ export class BaMenuService {
               {
                 path: 'verify',
                 loadChildren: () => System.import('../../../pages/verify/verify.module')
+              },
+              {
+                path: 'forgotpass',
+                loadChildren: () => System.import('./forgotpass/forgotpass.module')
               },
               {
                 path: 'pages',
@@ -206,6 +214,10 @@ export class BaMenuService {
               {
                 path: 'verify',
                 loadChildren: () => System.import('../../../pages/verify/verify.module')
+              },
+              {
+                path: 'forgotpass',
+                loadChildren: () => System.import('./forgotpass/forgotpass.module')
               },
               {
                 path: 'pages',
