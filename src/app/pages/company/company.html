@@ -1,4 +1,4 @@
-<div class="widgets">
+<div *ngIf="currentUser?.ref_id == '0' || (currentUser?.role=='startup' && currentUser?.ref_id == id)" class="widgets">
 
   <div class="row">
     <div class="col-md-12">
@@ -22,15 +22,15 @@
             <div class="col-md-12" id="businessInfo" style="padding-top:10px;padding-bottom:10px;margin-left:10px;margin-right:10px;background-color:white;border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#d9d9d9;border-left-style:solid;border-left-width:1px;border-left-color:#d9d9d9;border-right-style:solid;border-right-width:1px;border-right-color:#d9d9d9;padding-right: 0px;padding-left: 0px;">
               <div class="col-md-12" style="padding:0px;margin:0px;">
               <ul style="padding: 0px;margin: 0px;">
-                <li style="display:block;">
+                <li *ngIf="(role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id)" style="display:block;">
                   <i class="fa fa-user-circle-o" *ngIf="company?.contactName" aria-hidden="true" style="display:inline-block;color:#3c3c3c;padding-left: 10px;font-size: 18px;"></i>  
                   <div *ngIf="company?.contactName" style="display:inline-block;margin-left:6px;font-family:arial;color:#343434;font-size:12px;">{{company?.contactName}}</div> 
                 </li>
-                <li style="display:block;">
+                <li *ngIf="(role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id)" style="display:block;">
                   <i class="fa fa-mobile" *ngIf="company?.phoneNumber" aria-hidden="true" style="display:inline-block;color:#3c3c3c;padding-left: 14px;font-size: 22px;"></i>  
                   <div *ngIf="company?.phoneNumber" style="display:inline-block;margin-top:4px;margin-left:6px;font-family:arial;color:#343434;font-size:12px;">{{company?.phoneNumber}}</div> 
                 </li>
-                <li style="display:block;">
+                <li *ngIf="(role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id)" style="display:block;">
                   <i class="fa fa-envelope-o" *ngIf="company?.email" aria-hidden="true" style="display:inline-block;color:#3c3c3c;padding-left: 11px;font-size: 16px;"></i>  
                   <div *ngIf="company?.email" style="display:inline-block;margin-top:4px;margin-left:6px;font-family:arial;color:#343434;font-size:12px;">{{company?.email}}</div> 
                 </li>
@@ -51,7 +51,7 @@
               </ul>
               </div>
               <div class="col-md-12" style="padding:0px;margin:0px;">
-                  <div class="col-md-12" style="padding:0px;margin:0px;">
+                  <div *ngIf="(role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id)" class="col-md-12" style="padding:0px;margin:0px;">
                   <div class="col-md-6" style="padding:10px;margin:0px;">
                     <div class="col-md-12" id="count-bubble" style="padding:0px;">
                       <p *ngIf="company?.totalMoneyRaised" style="text-align:center;margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">{{company?.totalMoneyRaised}}</p>
@@ -60,26 +60,26 @@
                   </div>
                   <div class="col-md-6" style="padding:10px;margin:0px;">
                     <div class="col-md-12" id="count-bubble" style="padding:0px;">
-                      <p *ngIf="company?.stage" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">{{company?.stage}}</p>
-                      <p *ngIf="!company?.stage" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">N/A</p>
-                    </div>
-                  </div>  
-                  </div><!--col-md-12-->
-                  <div class="col-md-12" style="padding:0px;margin:0px;">                      
-                  <div class="col-md-6" style="display:inline-block;vertical-align:top;padding:0px;">
-                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Total Money Raised</p>	
-                  </div>
-                  <div class="col-md-6" style="display:inline-block;padding:0px;">
-                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Stage</p>
-                  </div>
-                  </div><!--col-md-12-->
-                  <div class="col-md-12" style="padding:0px;margin:0px;">
-                  <div class="col-md-6" style="padding:10px;margin:0px;">
-                    <div class="col-md-12" id="count-bubble" style="padding:0px;">
                         <p *ngIf="company?.employees" id="fanCount" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">{{company?.employees}}</p>
                         <p *ngIf="!company?.employees" id="fanCount" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">N/A</p>
                     </div>
                   </div>
+                  </div><!--col-md-12-->
+                  <div *ngIf="(role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id)" class="col-md-12" style="padding:0px;margin:0px;">                      
+                  <div class="col-md-6" style="display:inline-block;vertical-align:top;padding:0px;">
+                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Total Money Raised</p>	
+                  </div>
+                  <div class="col-md-6" style="display:inline-block;padding:0px;">
+                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Employees</p>
+                  </div>
+                  </div><!--col-md-12-->
+                  <div class="col-md-12" style="padding:0px;margin:0px;">
+                    <div class="col-md-6" style="padding:10px;margin:0px;">
+                      <div class="col-md-12" id="count-bubble" style="padding:0px;">
+                        <p *ngIf="company?.stage" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">{{company?.stage}}</p>
+                        <p *ngIf="!company?.stage" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">N/A</p>
+                      </div>
+                    </div>  
                   <div class="col-md-6" style="padding:10px;margin:0px;">
                     <div class="col-md-12" id="count-bubble" style="padding:0px;">
                         <p *ngIf="company?.b2bb2c" id="recommendCount" style="margin-top:8px;font-family:arial;color:#3c3c3c;overflow:hidden;padding-top:2px;padding-bottom:4px;">{{company?.b2bb2c}}</p>
@@ -89,7 +89,7 @@
                   </div><!--col-md-12-->
                   <div class="col-md-12" style="padding:0px;margin:0px;">
                   <div class="col-md-6" style="display:inline-block;padding:0px;">
-                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Employees</p>
+                    <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">Stage</p>
                   </div>
                   <div class="col-md-6" style="display:inline-block;padding:0px;">
                     <p style="text-align:center;margin-top:0px;margin-bottom:0px;font-family:arial;color:#343434;font-size:11px;">B2B B2C</p>
@@ -97,7 +97,7 @@
                   </div><!--col-md-12-->
               </div>
             </div>
-            <div class="col-md-12">
+            <div *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))" class="col-md-12">
               <div *ngIf="creatingpdf" class="loader">Loading...</div>
               <div *ngIf="!creatingpdf" class="button-wrapper" style="margin:auto;width:50%">
                 <button (click)="this.creatingpdf=true;exportToPDF()" type="button" id="executivesummary" class="btn btn-default btn-raised" style="margin-top:15px">Executive Summary</button>
@@ -107,7 +107,7 @@
             
             <div class="col-md-7" style="padding-left: 5px;padding-right: 10px;">
                 <div class="col-md-12" style="padding:0px;">
-                  <div *ngIf="company?.id">
+                  <div *ngIf="company?.id && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))">
                     <a [routerLink]="['/pages/editcompany', company.id]">
                       <div style="color: white;font-size: 10px;text-align:right;">Edit Profile</div>
                     </a>
@@ -129,8 +129,7 @@
                   <p id="statusText" style="padding-top:4px;padding-bottom:5px;margin-left:10px;margin-right:10px;margin-top:0px;margin-bottom:0px;font-family:arial;font-size:12px;color:#e7e7e7;">{{company?.background}}</p>
                   <!--<div *ngIf="company?.background" style="display:inline-block;color:#343434;font-size:11px;">{{company?.background}}</div> -->
                 </div>
-                <div class="col-md-12" id="profileButtons" style="margin-left:0px;margin-right:0px;">
-                  
+                <div *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))" class="col-md-12" id="profileButtons" style="margin-left:0px;margin-right:0px;">
                     <div class="col-md-6" style="padding:0px">
                       <div *ngIf="!loading">
                       <p style="text-align:center;font-size: 10px;margin-top:5px;margin-bottom:5px;font-family:arial;font-size:10px;color:#3c3c3c;">Select a list, add to top 100!</p>
@@ -200,6 +199,10 @@
             <md-tab>
               <template md-tab-label>More Info</template>
               <template md-tab-content>
+                <div *ngIf="company?.oneLiner" style="font-size: 10px; color: #ffffff; opacity: .38;">Company One Liner:</div>
+                <div *ngIf="company?.oneLiner" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.oneLiner}}</div>
+                <div *ngIf="company?.pnpOffice" style="font-size: 10px; color: #ffffff; opacity: .38;">Plug and Play Office:</div>
+                <div *ngIf="company?.pnpOffice" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.pnpOffice}}</div>
                 <div *ngIf="company?.pnpContact" style="font-size: 10px; color: #ffffff; opacity: .38;">Account Manager:</div>
                 <div *ngIf="company?.pnpContact" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.pnpContact}}</div>
                 <div *ngIf="company?.verticals" style="font-size: 10px; color: #ffffff; opacity: .38;">Verticals:</div>
@@ -212,20 +215,26 @@
                 <div *ngIf="company?.advantage" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.advantage}}</div>
                 <div *ngIf="company?.founded" style="font-size: 10px; color: #ffffff; opacity: .38;">Founded:</div>
                 <div *ngIf="company?.founded" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.founded}}</div>
-                <div *ngIf="company?.partnerInterests" style="font-size: 10px; color: #ffffff; opacity: .38;">Partner Interests:</div>
-                <div *ngIf="company?.partnerInterests" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.partnerInterests}}</div>
-                <div *ngIf="company?.caseStudy" style="font-size: 10px; color: #ffffff; opacity: .38;">Case Study:</div>
-                <div *ngIf="company?.caseStudy" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.caseStudy}}</div>
-                <div *ngIf="company?.comments" style="font-size: 10px; color: #ffffff; opacity: .38;">Comments:</div>
-                <div *ngIf="company?.comments" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.comments}}</div>
+                <div *ngIf="company?.investors" style="font-size: 10px; color: #ffffff; opacity: .38;">Investors:</div>
+                <div *ngIf="company?.investors" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.investors}}</div>
+                <div *ngIf="company?.howDidYouHear" style="font-size: 10px; color: #ffffff; opacity: .38;">How you initially heard about us:</div>
+                <div *ngIf="company?.howDidYouHear" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.howDidYouHear}}</div>
+                <div *ngIf="company?.intlBusinessOpp" style="font-size: 10px; color: #ffffff; opacity: .38;">International office business opportunities:</div>
+                <div *ngIf="company?.intlBusinessOpp" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company?.intlBusinessOpp}}</div>
+                <div *ngIf="company?.partnerInterests && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 10px; color: #ffffff; opacity: .38;">Partner Interests:</div>
+                <div *ngIf="company?.partnerInterests && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.partnerInterests}}</div>
+                <div *ngIf="company?.caseStudy && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 10px; color: #ffffff; opacity: .38;">Case Study:</div>
+                <div *ngIf="company?.caseStudy && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.caseStudy}}</div>
+                <div *ngIf="company?.comments && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 10px; color: #ffffff; opacity: .38;">Comments:</div>
+                <div *ngIf="company?.comments && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.comments}}</div>
                 <div *ngIf="company?.dateOfInvestment" style="font-size: 10px; color: #ffffff; opacity: .38;">Date of Investment:</div>
                 <div *ngIf="company?.dateOfInvestment" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.dateOfInvestment}}</div>
-                <div *ngIf="company?.materials" style="font-size: 10px; color: #ffffff; opacity: .38;">Materials:</div>
-                <div *ngIf="company?.materials" style="font-size: 12px; color: #ffffff; opacity: .54;"><a style="color: #ffffff" href="{{company.materials}}" target="_blank">{{company.materials}}</a></div>
+                <div *ngIf="company?.materials && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 10px; color: #ffffff; opacity: .38;">Materials:</div>
+                <div *ngIf="company?.materials && ((role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice))) || (currentUser?.role=='startup' && currentUser?.ref_id == id))" style="font-size: 12px; color: #ffffff; opacity: .54;"><a style="color: #ffffff" href="{{company.materials}}" target="_blank">{{company.materials}}</a></div>
                 <div *ngIf="company?.timestamp" style="font-size: 10px; color: #ffffff; opacity: .38;">Time Stamp:</div>
                 <div *ngIf="company?.timestamp" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.timestamp}}</div>
-                <div *ngIf="company?.id" style="font-size: 10px; color: #ffffff; opacity: .38;">Database ID:</div>
-                <div *ngIf="company?.id" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.id}}</div>
+                <div *ngIf="company?.id && (role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice)))" style="font-size: 10px; color: #ffffff; opacity: .38;">Database ID:</div>
+                <div *ngIf="company?.id && (role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(company?.pnpOffice)))" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.id}}</div>
                 <div *ngIf="company?.updated" style="font-size: 10px; color: #ffffff; opacity: .38;">Last Updated:</div>
                 <div *ngIf="company?.updated" style="font-size: 12px; color: #ffffff; opacity: .54;">{{company.updated}}</div>
               </template>
@@ -261,4 +270,10 @@
     </div>
   </div>
 
+</div>
+<div *ngIf="!(currentUser?.ref_id == '0' || (currentUser?.role=='startup' && currentUser?.ref_id == id))">
+  <div ng-show="pageload" class="widgets">
+      <ba-card title="Not authorized" baCardClass="with-scroll">
+      </ba-card>
+  </div>
 </div>

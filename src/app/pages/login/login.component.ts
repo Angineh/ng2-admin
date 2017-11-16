@@ -1,8 +1,12 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, Routes, RouterModule } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
  
 import { AuthenticationService } from '../../_services/index';
+import { BaMenuService } from '../../theme';
+import { Pages } from '../pages.component';
+//import { PAGES_MENU } from '../pages.menu.auth';
 
 @Component({
   selector: 'login',
@@ -12,6 +16,7 @@ import { AuthenticationService } from '../../_services/index';
 })
 export class Login implements OnInit  { 
   
+  //public routes: Routes = [];
   model: any = {};
   loading = false;
   error = '';
@@ -21,7 +26,8 @@ export class Login implements OnInit  {
   public submitted:boolean = false;
 
   
-  constructor(fb:FormBuilder, private router: Router, private authenticationService: AuthenticationService) { 
+  constructor(fb:FormBuilder, private router: Router, private authenticationService: AuthenticationService, private _menuService: BaMenuService) {
+
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -58,10 +64,17 @@ export class Login implements OnInit  {
             });  */
            this.authenticationService.login(this.email.value, this.password.value)
             .subscribe(result => {
-               console.log(result);
+               //console.log(result);
                 if (result === true) {
                     // login successful
-                    this.router.navigate(['pages/startups']);
+                    //console.log("login successful");
+                    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+                    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+                    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+                    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(currentUser));
+                    this.router.resetConfig(this._menuService.getAuthRoutes(currentUser));
+
+                    this.router.navigate(['pages/']);
                 } else {
                     // login failed
                     this.error = 'Username or password is incorrect';
@@ -71,17 +84,4 @@ export class Login implements OnInit  {
       
     }
   }
-/*   test(){
-    this.authenticationService.login2(this.email.value, this.password.value).subscribe(result => {
-               console.log(result);
-                if (result === true) {
-                    // login successful
-                    this.router.navigate(['pages/startups']);
-                } else {
-                    // login failed
-                    this.error = 'Username or password is incorrect';
-                    this.loading = false;
-                }
-            }); 
-  } */
 }

@@ -35,7 +35,7 @@
           <div class="col-md-10">
             <pagination-controls  class="my-pagination" (pageChange)="getPage($event)" id="server"></pagination-controls>  
           </div>
-          <div class="col-md-2">                   
+          <div *ngIf="role=='admin' || role=='venture' || role=='global'" class="col-md-2">                   
               <a [routerLink]="['/pages/newstartup']">
                 <div class="button-wrapper">
                   <button type="button" id="exportpdf" class="btn btn-default btn-raised" style="float:right;">New Startup</button>
@@ -58,11 +58,11 @@
             </div>
             <div class="col-md-3">
               <div *ngIf="obj?.verticals" style="font-size: 10px; color: #000000; opacity: .38;">Verticals:</div>
-              <div *ngIf="obj?.verticals" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.verticals}}</div>
+              <div *ngIf="obj?.verticals" style="font-size: 12px; color: #000000; opacity: .54;word-wrap:break-word;">{{obj.verticals}}</div>
               <div *ngIf="obj?.tags" style="font-size: 10px; color: #000000; opacity: .38;">Tags:</div>
-              <div *ngIf="obj?.tags" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.tags}}</div>
+              <div *ngIf="obj?.tags" style="font-size: 12px; color: #000000; opacity: .54;word-wrap:break-word;">{{obj.tags}}</div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(obj?.pnpOffice))">
               <div> 
                   <button class="top20btn" (click)="top20Modal(obj)">20</button>
                   <button class="top100btn" (click)="top100Modal(obj)">100</button>
@@ -79,6 +79,12 @@
               <div *ngIf="obj?.contactName" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.contactName}}</div> 
               <div *ngIf="obj?.email" style="font-size: 10px; color: #000000; opacity: .38;">Email:</div>
               <div *ngIf="obj?.email" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.email}}</div>
+            </div>
+            <div *ngIf="role=='user'" class="col-md-3">
+              <div *ngIf="obj?.stage" style="font-size: 10px; color: #000000; opacity: .38;">Stage:</div>
+              <div *ngIf="obj?.stage" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.stage}}</div>
+              <div *ngIf="obj?.competition" style="font-size: 10px; color: #000000; opacity: .38;">Competition:</div>
+              <div *ngIf="obj?.competition" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.competition}}</div> 
             </div>
             </div>
           </div>

@@ -14,6 +14,10 @@ import * as FileSaver from "file-saver";
 import { ModalComponent } from './export.modal';
 import { DialogService } from "ng2-bootstrap-modal";
 
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
+
 
 @Component({
   selector: 'batch',
@@ -37,12 +41,18 @@ export class BatchComponent implements OnInit, OnDestroy  {
   public error: boolean;
   public loading: boolean;
   public overlay: any;
+  currentUser: any;
 
-  constructor(private route: ActivatedRoute,  private _batchService: BatchService, public toastr: ToastsManager, vcr: ViewContainerRef, private dialogService:DialogService) {
-      this.unsetOverlay();
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      this.creatingpdf = false;
-      this.toastr.setRootViewContainerRef(vcr);
+  constructor(private route: ActivatedRoute,  private _batchService: BatchService, public toastr: ToastsManager, vcr: ViewContainerRef, private dialogService:DialogService, private router: Router, private _menuService: BaMenuService) {
+    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+    this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));  
+    this.unsetOverlay();
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    this.creatingpdf = false;
+    this.toastr.setRootViewContainerRef(vcr);      
   }
 
   ngOnInit(){

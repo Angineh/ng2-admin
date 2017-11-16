@@ -1,12 +1,15 @@
 import {Component, ViewChild, ElementRef, OnInit, ViewEncapsulation, ViewContainerRef} from '@angular/core';
 import {Pipe, PipeTransform, SimpleChanges} from '@angular/core'
 import { Observable } from 'rxjs/Rx';
-import {Router} from '@angular/router';
 
 import { Top100ListsService } from './top100lists.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Subscription} from 'rxjs';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,9 +31,13 @@ export class Top100ListsComponent implements OnInit {
   public errorArchived: boolean;
   public loading: boolean;
   public overlay: any;
-  router: Router;
 
-  constructor(private _top100Service: Top100ListsService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+  constructor(private _top100Service: Top100ListsService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private _menuService: BaMenuService) {
+    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(currentUser));
+    this.router.resetConfig(this._menuService.getAuthRoutes(currentUser));
     this.archived = new Array(0);
     this.lists  = new Array(0);
     this.unsetOverlay();

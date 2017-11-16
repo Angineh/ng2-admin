@@ -79,7 +79,7 @@ export class AdminService {
     udpateUser(body:string){
         let header = new Headers({ 'Accept': 'application/json','Content-Type':'application/json'});
         let options = new RequestOptions({ headers: header });
+        //console.log(body);
         return this._http.post('/rest/plugandplay/api/v1/users/update',body,options);
     }
-    
 }

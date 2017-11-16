@@ -4,7 +4,7 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import * as CryptoJS from 'crypto-js';
- 
+
 @Injectable()
 export class AuthenticationService {
     public token: string;
@@ -32,7 +32,7 @@ export class AuthenticationService {
                     this.token = token;
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     // Encrypt
-                    let ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, token: token }), 'pnp4life!');
+                    let ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, pnpOffice: response.json().pnpOffice, token: token }), 'pnp4life!');
                     localStorage.setItem('currentUser', ciphertext);                    
                     //localStorage.setItem('currentUser', JSON.stringify({ id: response.json().id, name: response.json().name, email: response.json().email, password: response.json().password, role: response.json().role, ref_id: response.json().ref_id, token: token }))
                     /* var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
@@ -90,8 +90,20 @@ export class AuthenticationService {
  
     logout(): void {
         // clear token remove user from local storage to log user out
+        if(localStorage.getItem('currentUser') != null){
+            localStorage.clear();
+            sessionStorage.clear();
+            //window.location.reload(true)    
+        }
         this.token = null;
-        localStorage.removeItem('currentUser');
+
+        //localStorage.removeItem('currentUser');
+        
+        
+       /*  this._compiler.clearCache(); */
+        
+        
+        //location.reload();
     }
 
     httpsReq(method:string, path:string, body:string):  Observable<Response>{

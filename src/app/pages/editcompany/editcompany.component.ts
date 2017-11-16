@@ -6,6 +6,9 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { FileUploader } from 'ng2-file-upload';
 
 import { EditCompanyService } from './editcompany.service';
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 const URL = '/rest/plugandplay/api/v1/ventures/logo';
 
@@ -28,14 +31,22 @@ export class EditCompanyComponent implements OnInit, OnDestroy {
   public error: boolean;
   public loading: boolean;
   public loading20: boolean;
+  public pageload: boolean = false;
   submitAttempt = false;
   public uploader:FileUploader = new FileUploader({url: URL});
-
+  currentUser: any;
+  role: Observable<any>;
   
 
-constructor(private route: ActivatedRoute, private _companyService: EditCompanyService, public toastr: ToastsManager, vcr: ViewContainerRef) {
-      this._companyService = _companyService;    
-      this.toastr.setRootViewContainerRef(vcr);   
+constructor(private route: ActivatedRoute, private _companyService: EditCompanyService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private _menuService: BaMenuService) {
+  var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+  this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+  // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+  this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+  this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));    
+  this.role = this.currentUser.role;
+  this._companyService = _companyService;    
+  this.toastr.setRootViewContainerRef(vcr);   
       
       
 }
@@ -51,6 +62,7 @@ constructor(private route: ActivatedRoute, private _companyService: EditCompanyS
         () => console.log('Completed!')
     );
     this.initForm();
+    this.pageload = true;
   }
   uploadPhoto(){
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => { form.append('id', this.id); };   

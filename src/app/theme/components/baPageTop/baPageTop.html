@@ -18,7 +18,7 @@
       </a>
       <ul class="dropdown-menu top-dropdown-menu user-dropdown" aria-labelledby="user-profile-dd"> <!-- profile-dropdown -->
         <li class="dropdown-item" style="padding-top:0px;padding-bottom:0px;"><i class="dropdown-arr"></i></li>
-        <li class="dropdown-item"><a href="/" onclick="return false;"><i style="width:15px" class="fa fa-user"></i>Profile</a></li>
+        <li class="dropdown-item" *ngIf="role=='startup'"><a href [routerLink]="['/pages/company', currentUser.ref_id]"><i style="width:15px" class="fa fa-user"></i>Profile</a></li>
         <li class="dropdown-item"><a href [routerLink]="['/pages/settings']"><i style="width:15px" class="fa fa-cog"></i>Settings</a></li>        
         <li class="dropdown-item" *ngIf="role=='admin'"><a href [routerLink]="['/pages/admin']"><i style="width:15px" class="fa fa-wrench"></i>Admin</a></li>
         <li class="dropdown-item"><a href class="signout" [routerLink]="['/login']"><i style="width:15px" class="fa fa-power-off"></i>Sign out</a></li>

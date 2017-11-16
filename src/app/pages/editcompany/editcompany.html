@@ -1,4 +1,4 @@
-<div class="widgets">
+<div *ngIf="(role=='admin' || role=='venture' || role=='global') || (currentUser?.role=='startup' && currentUser?.ref_id == id)" class="widgets">
   
   <ba-card title="Edit Profile" baCardClass="with-scroll">
   <div class="form-group">
@@ -208,7 +208,7 @@
       </div>
     </div>
   </div>
-  <div class="row" style="margin-bottom: 20px;">
+  <div *ngIf="role=='admin' || role=='venture' || role=='global'" class="row" style="margin-bottom: 20px;">
     <div class="col-sm-12">
       <div class="form-group">
         <div class="col-sm-1" style="padding-left: 0px;top:3px;">
@@ -240,4 +240,10 @@
     </div>
   </div>
   </ba-card>
+</div>
+<div *ngIf="!((role=='admin' || role=='venture' || role=='global') || (currentUser?.role=='startup' && currentUser?.ref_id == id))">
+  <div ng-show="pageload" class="widgets">
+      <ba-card title="Not authorized" baCardClass="with-scroll">
+      </ba-card>
+  </div>
 </div>
