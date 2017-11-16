@@ -153,7 +153,7 @@ export class BaMenuService {
                 },
                 {
                   path: 'forgotpass',
-                  loadChildren: () => System.import('./forgotpass/forgotpass.module')
+                  loadChildren: () => System.import('../../../pages/forgotpass/forgotpass.module')
                 },
                 {
                   path: 'pages',
@@ -184,7 +184,7 @@ export class BaMenuService {
               },
               {
                 path: 'forgotpass',
-                loadChildren: () => System.import('./forgotpass/forgotpass.module')
+                loadChildren: () => System.import('../../../pages/forgotpass/forgotpass.module')
               },
               {
                 path: 'pages',
@@ -217,7 +217,7 @@ export class BaMenuService {
               },
               {
                 path: 'forgotpass',
-                loadChildren: () => System.import('./forgotpass/forgotpass.module')
+                loadChildren: () => System.import('../../../pages/forgotpass/forgotpass.module')
               },
               {
                 path: 'pages',
