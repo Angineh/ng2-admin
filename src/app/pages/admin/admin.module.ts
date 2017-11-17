@@ -13,8 +13,6 @@ import { FilterModal } from './filter.modal';
 import { ConfirmModal } from './confirm.modal';
 import { EditModal } from './edit.modal';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
-
 
 @NgModule({
   imports: [
@@ -24,8 +22,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     routing,
     Ng2PaginationModule,
     BootstrapModalModule,
-    ReactiveFormsModule,
-    Ng2SmartTableModule
+    ReactiveFormsModule
   ],
   entryComponents: [
     FilterModal,
