@@ -15,6 +15,9 @@ import { FilterModal } from './filter.modal';
 import { ConfirmModal } from './confirm.modal';
 import { EditModal } from './edit.modal';
 
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
+
 interface Filter {
   name ? : string;
   value ? : string;
@@ -75,13 +78,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   };
   
-constructor(private route: ActivatedRoute, private _adminService: AdminService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, private formBuilder: FormBuilder) {
-      this._adminService = _adminService;    
-      this.toastr.setRootViewContainerRef(vcr);   
+constructor(private route: ActivatedRoute, private _adminService: AdminService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, private formBuilder: FormBuilder
+    , private router: Router, private _menuService: BaMenuService) {
       var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
       var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+      // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+      this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(currentUser));
+      this.router.resetConfig(this._menuService.getAuthRoutes(currentUser));
+      this._adminService = _adminService;    
+      this.toastr.setRootViewContainerRef(vcr);   
+      
       this.role = currentUser.role;
       this.filters = new Array(0);
+      
 }
 
   ngOnInit() {    
@@ -141,9 +150,13 @@ constructor(private route: ActivatedRoute, private _adminService: AdminService, 
                 this._adminService.deleteUser(user.id).map(res => {
                     // If request fails, throw an Error that will be caught
                     if(res.status == 204) {
-                      this.showError("Could not delete "+user.name+", please try again.", "", 4000);  
+                      this.showError("Could not delete "+user.name+", please try again.", "", 4000); 
+                      this.deleteon = true;
+                      this.filterButton.nativeElement.click(); 
                     } else if (res.status < 200 || res.status >= 300){
-                      this.showError("Could not delete "+user.name+", please try again.", "", 4000);  
+                      this.showError("Could not delete "+user.name+", please try again.", "", 4000);
+                      this.deleteon = true;
+                      this.filterButton.nativeElement.click();  
                       throw new Error('This request has failed ' + res.status);
                     }
                     // If everything went fine, return the response
@@ -287,14 +300,20 @@ addUser() {
   this._adminService.addUser(JSON.stringify(this.userFormData)).map(res => {
       // If request fails, throw an Error that will be caught
       if(res.status == 204) {
-        this.loadingUser = false;
         this.showError("Could not add user, please contact a PnP admin.", "", 4000);
-      } else if (res.status == 206){
         this.loadingUser = false;
+        this.useron = true;
+        this.filterButton.nativeElement.click();
+      } else if (res.status == 206){   
         this.showWarning("Email address is already registered.", "", 4000);
-      } else if (res.status < 200 || res.status >= 300){
         this.loadingUser = false;
+        this.useron = true;
+        this.filterButton.nativeElement.click();
+      } else if (res.status < 200 || res.status >= 300){  
         this.showError("Could not add user, please try again.", "", 4000);
+        this.loadingUser = false;
+        this.useron = true;
+        this.filterButton.nativeElement.click();
       }
       // If everything went fine, return the response
       else {
@@ -317,7 +336,9 @@ addUser() {
       api_key :"f7d624c2-f89e-40b9-9e4b-ff2db471a998",
       name : null,
       email : null,
-      password: "" 
+      password: "",
+      pnpOffice: null,
+      role : "user"
     }
   }
   initSearch(){

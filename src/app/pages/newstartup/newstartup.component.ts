@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { FileUploader } from 'ng2-file-upload';
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 import { NewStartupService } from './newstartup.service';
 
@@ -31,9 +34,15 @@ export class NewStartupComponent implements OnInit, OnDestroy {
   public uploader:FileUploader = new FileUploader({url: URL});
   
 
-constructor(private route: ActivatedRoute, private _companyService: NewStartupService, public toastr: ToastsManager, vcr: ViewContainerRef) {
-      this._companyService = _companyService;    
-      this.toastr.setRootViewContainerRef(vcr);   
+constructor(private route: ActivatedRoute, private _companyService: NewStartupService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private _menuService: BaMenuService) {
+  
+  var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+  var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+  // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+  this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(currentUser));
+  this.router.resetConfig(this._menuService.getAuthRoutes(currentUser));    
+  this._companyService = _companyService;    
+  this.toastr.setRootViewContainerRef(vcr);   
 }
 
  ngOnInit() {

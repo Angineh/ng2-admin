@@ -15,6 +15,8 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { FormArray, FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 interface TopLists {
     listName ? : String; // the "?" makes the property optional, 
@@ -65,12 +67,17 @@ export class StartupsComponent implements OnInit {
   filterForm: FormGroup;
   role: Observable<any>;
   deleteon: boolean = false;
+  currentUser: any;
   
-  constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, private formBuilder: FormBuilder){
+  constructor(private _startupService: StartupsService, private dialogService:DialogService, public toastr: ToastsManager, vcr: ViewContainerRef, 
+    private formBuilder: FormBuilder, private router: Router, private _menuService: BaMenuService){
     //var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
-    var currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
-    this.role = currentUser.role;
+    this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+    this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));
+    this.role = this.currentUser.role;
     this.filters = new Array(0);
     this.getTop20Lists();
     this.getDealflowLists();
@@ -280,7 +287,7 @@ export class StartupsComponent implements OnInit {
     }
 
     addBatch(id:Number,listName:String) {
-    console.log("Add "+id+ " to Top20 list "+listName);
+    //console.log("Add "+id+ " to Top20 list "+listName);
     this.loading = true;
     //this.error = false;
     this._startupService.addToBatch(id,listName).map(res => {
@@ -292,7 +299,7 @@ export class StartupsComponent implements OnInit {
       } else if (res.status == 206) {
         this.loading = false;
         //this.error = true;
-        this.showWarning("The Batch list '"+listName+"' already has one hundred entries.", "", 5000);
+        this.showWarning("The Batch list '"+listName+"' already has two hundred entries.", "", 5000);
       } else if (res.status < 200 || res.status >= 300){
         this.loading = false;
         this.showError("Could not add to Batch, please try again.", "", 4000);

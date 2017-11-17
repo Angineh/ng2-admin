@@ -7,6 +7,10 @@ import { LocalDataSource } from 'ng2-smart-table';
 import {Subscription} from 'rxjs';
 //import {BaThemePreloader} from '../../theme/services';
 
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'portfolio',
@@ -21,12 +25,16 @@ export class PortfolioComponent implements OnInit {
   companies: any[];
   public error: boolean;
   public loading: boolean;
+  role: Observable<any>;
+  currentUser: any;
 
-  constructor(private _portfolioService: PortfolioService) {
- /*   this.busy = _portfolioService.getVentures().subscribe(data => this.companies = data,
-    error => console.error('Error: ' + error),
-        () => console.log('Completed!')
-    )*/
+  constructor(private _portfolioService: PortfolioService, private router: Router, private _menuService: BaMenuService) {
+    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+    this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));
+    this.role = this.currentUser.role;
     this.getPortfolioList();
   }
 

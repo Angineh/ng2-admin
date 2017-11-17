@@ -21,6 +21,51 @@
         </div>
       </div>
   </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="role">Role</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <select class="form-control" id="role" [(ngModel)]="userFormData.role" name="role" required>
+          <option>user</option>
+          <option>venture</option>
+          <option>global</option>
+          <option>admin</option>
+          <option>startup</option>
+          <option>corporation</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="pnpOffices">PnP Office(s)</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">NOTE: Only required for "global" role.</p>
+        <select multiple class="form-control" [(ngModel)]="userFormData.pnpOffice" name="pnpOffices" id="pnpOffices">
+          <option>Plug and Play Headquarters (Silicon Valley)</option>
+          <option>FinTech - New York</option>
+          <option>FinTech - Abu Dhabi - ADGM Plug and Play</option>
+          <option>FinTech - Paris - BNP Paribas-Plug and Play</option>
+          <option>FinTech - Tokyo</option>
+          <option>Health - Cleveland</option>
+          <option>Health - Munich</option>
+          <option>InsurTech - Munich</option>
+          <option>InsurTech - New York</option>
+          <option>InsurTech - Tokyo</option>
+          <option>Mobility - Stuttgart - Startup Autobahn</option>
+          <option>Mobility - Berlin - Beyond1435</option>
+          <option>Mobility - Tokyo</option>
+          <option>Plug and Play APAC</option>
+          <option>Plug and Play China</option>
+          <option>Plug and Play Japan</option>
+          <option>Retail - Amsterdam - Fashion for Good</option>
+          <option>Retail - Munich - Retailtech Hub</option>
+          <option>Retail - Paris - Lafayette Plug and Play</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <button type="submit" (click)="initSubmit()" class="btn btn-primary">Submit</button>
   </form>
   </div>

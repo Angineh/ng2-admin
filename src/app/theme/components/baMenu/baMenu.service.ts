@@ -78,9 +78,17 @@ export class BaMenuService {
     // we have to collect all paths to correctly build the url then
     if (Array.isArray(item.route.path)) {
       item.route.paths = item.route.path;
+      //console.log(item.route.path);
     } else {
+      
+      if(item.route.path.indexOf("%2F") > 0){
+        item.route.path = item.route.path.replace("%2F","/");
+      }
+
       item.route.paths = parent && parent.route && parent.route.paths ? parent.route.paths.slice(0) : ['/'];
       if (!!item.route.path) item.route.paths.push(item.route.path);
+      
+      //console.log(item.route.paths);
     }
 
     if (object.children && object.children.length > 0) {
@@ -110,5 +118,36 @@ export class BaMenuService {
   protected _selectItem(object:any):any {
     object.selected = this._router.isActive(this._router.createUrlTree(object.route.paths), object.pathMatch === 'full');
     return object;
+  }
+
+  public updateMenuByRoutes(routes: Routes) {
+    let convertedRoutes = this.convertRoutesToMenus(_.cloneDeep(routes));
+
+    this.fixRoutes(convertedRoutes); // own fix for route cp/Pages -> array[cp, pages]
+
+    //this.menuItems.next(convertedRoutes);
+    return convertedRoutes;
+  }
+
+
+  private fixRoutes(convertedRoutes: any) {
+    convertedRoutes.forEach((routeItem) => {
+   
+     let newPaths = [];
+
+      routeItem["route"].paths.forEach((path) => {
+        //console.log(path);
+        if (path.indexOf('/') > 0) {
+          let firstPath = path.substring(0, path.indexOf('/'));
+          let secondPath = path.substring(path.indexOf('/') + 1);
+          newPaths.push(firstPath);
+          newPaths.push(secondPath);
+        } else {
+          newPaths.push(path);
+        }
+      });
+
+      routeItem.route.paths = newPaths;
+    });
   }
 }

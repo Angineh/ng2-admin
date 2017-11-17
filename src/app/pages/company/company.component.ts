@@ -6,6 +6,9 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 import { CompanyService } from './company.service';
 export interface companyInt {
@@ -55,7 +58,7 @@ export interface companyInt {
 export class CompanyComponent implements OnInit, OnDestroy {
   id: number;
   private sub: any;
-  company: companyInt;
+  company: any;
   top100: Object;
   top20: Object;
   lists: any[];
@@ -64,9 +67,19 @@ export class CompanyComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public loading20: boolean;
   public creatingpdf: boolean;
+  public pageload: boolean = false;
+  role: Observable<any>;
+  currentUser: any;
   
 
-constructor(private route: ActivatedRoute, private _companyService: CompanyService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+constructor(private route: ActivatedRoute, private _companyService: CompanyService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private _menuService: BaMenuService) {
+  
+      var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+      this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+      // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+      this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+      this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));
+      this.role = this.currentUser.role;
       this._companyService = _companyService; 
       this.toastr.setRootViewContainerRef(vcr);    
       pdfMake.vfs = pdfFonts.pdfMake.vfs;   
@@ -80,17 +93,16 @@ constructor(private route: ActivatedRoute, private _companyService: CompanyServi
     });
     this._companyService.getVenture(this.id).subscribe(data => this.company = data,
     error => console.error('Error: ' + error),
-        () => console.log('Completed!')
+        //() => console.log(JSON.stringify(this.company))
     );
     this._companyService.getTop100Lists().subscribe(data => this.lists = data,
-        error => console.error('Error: ' + error),
-        () => console.log('Completed!')
+        error => console.error('Error: ' + error)
     );
     this._companyService.getTop20Lists().subscribe(data => this.top20list = data,
-        error => console.error('Error: ' + error),
-        () => console.log('Completed!')
-    );
-    //console.log(this.company);
+        error => console.error('Error: ' + error)
+    );    
+    this.pageload = true;
+
   }
 
   ngOnDestroy() {

@@ -15,6 +15,9 @@ import { ModalComponent } from './export.modal';
 import { CorpModalComponent } from './corp.modal';
 import { DealflowModalComponent } from './dealflow.modal';
 import { DialogService } from "ng2-bootstrap-modal";
+import * as CryptoJS from 'crypto-js';
+import { BaMenuService } from '../../theme';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -41,12 +44,18 @@ export class Top20Component implements OnInit, OnDestroy  {
   public error: boolean;
   public loading: boolean;
   public overlay: any;
+  currentUser: any;
 
-  constructor(private route: ActivatedRoute,  private _top20Service: Top20Service, public toastr: ToastsManager, vcr: ViewContainerRef, private dialogService:DialogService) {
-      this.unsetOverlay();
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      this.creatingpdf = false;
-      this.toastr.setRootViewContainerRef(vcr);
+  constructor(private route: ActivatedRoute,  private _top20Service: Top20Service, public toastr: ToastsManager, vcr: ViewContainerRef, private dialogService:DialogService, private router: Router, private _menuService: BaMenuService) {
+    var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
+    this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+    // VERY IMPORTANT these methods will update the menu and routes dependent on the user role
+    this._menuService.updateMenuByRoutes(this._menuService.getPageMenu(this.currentUser));
+    this.router.resetConfig(this._menuService.getAuthRoutes(this.currentUser));
+    this.unsetOverlay();
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    this.creatingpdf = false;
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(){
