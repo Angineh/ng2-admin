@@ -35,8 +35,8 @@ interface Filter {
   providers: [MyStartupsService]
 })
 export class MyStartupsComponent implements OnInit {
-  @ViewChild('input')
-  input: ElementRef;
+  //@ViewChild('input')
+  //input: ElementRef;
   @ViewChild('filterButton') filterButton: ElementRef;
   @Input('data') companies: any[];
   asyncCompanies: Observable<any[]>;
@@ -84,13 +84,14 @@ export class MyStartupsComponent implements OnInit {
     this.getTop100Lists();
     this.getBatchLists();
     this.toastr.setRootViewContainerRef(vcr); 
+    //console.log(this.currentUser.pnpOffice)
   }
 
   ngOnInit(){
       this.searchString = '';
       this.getPage(1);
-      let eventObservable = Observable.fromEvent(this.input.nativeElement, 'keyup')
-      eventObservable.subscribe();  
+      //let eventObservable = Observable.fromEvent(this.input.nativeElement, 'keyup')
+      //eventObservable.subscribe();  
       
       this.filterForm = this.formBuilder.group({
         'Tags': ['', Validators.required],
@@ -541,7 +542,7 @@ export class MyStartupsComponent implements OnInit {
         this.loading = true;
         this.error = false;
         if(this.filters.length > 0){
-            this.asyncCompanies = this._startupService.getVenturesPageFilter(page, this.filters)
+            this.asyncCompanies = this._startupService.getVenturesPageFilter(page, this.filters, this.currentUser.pnpOffice)
                 .do(res => {
                     if(res.status == 204) {
                       this.loading = false;
@@ -589,7 +590,7 @@ export class MyStartupsComponent implements OnInit {
                 err => console.error('Error: ' + err),
                     () => console.log("")
                 );  */
-            this.asyncCompanies = this._startupService.getVenturesPage(page, this.searchString)
+            this.asyncCompanies = this._startupService.getVenturesPageFilterOffice(page, this.currentUser.pnpOffice)
             .do(res => {
                 if(res.status == 204) {
                   this.loading = false;

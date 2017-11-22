@@ -35,7 +35,7 @@ export class MyStartupsService {
             });
     }
 
-    getVenturesPageFilter(page:Number, filters:any[]){ 
+    getVenturesPageFilter(page:Number, filters:any[], pnpOffices: string){ 
         let body : any;
         let headers = new Headers({ 'Accept': 'application/json' });
         let options = new RequestOptions({ headers: headers });
@@ -51,7 +51,37 @@ export class MyStartupsService {
             }            
         }
         //console.log("Query: "+query);
-        return this._http.get('/rest/plugandplay/api/v1/ventures/filter/'+page+'?'+query,options)
+        return this._http.get('/rest/plugandplay/api/v1/ventures/filter/'+page+'?'+query+'&pnpOffices='+pnpOffices,options)
+            .map(res => {
+                // If request fails, throw an Error that will be caught
+                if(res.status == 204) {
+                    console.log(res.status);
+                    return res;
+                } 
+                // If everything went fine, return the response
+                else {
+                return res.json();
+                }
+            });
+    }
+
+    getVenturesPageFilterOffice(page:Number, pnpOffices: string){ 
+        let body : any;
+        let headers = new Headers({ 'Accept': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        /* let query: string = "";
+        for(var i = 0; i < filters.length; i ++){
+            let filter: String = filters[i].name;
+            
+            if(i+1 == filters.length){                
+                query += filter.toLowerCase() + "=" + filters[i].value
+            }else{
+                query += filter.toLowerCase() + "=" + filters[i].value + "&";
+            }            
+        } */
+        //console.log("Query: "+query);
+        return this._http.get('/rest/plugandplay/api/v1/ventures/filter/'+page+'?pnpOffices='+pnpOffices,options)
             .map(res => {
                 // If request fails, throw an Error that will be caught
                 if(res.status == 204) {

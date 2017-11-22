@@ -77,4 +77,9 @@
     </div>
   </div> -->
   </ba-card>
+  <ba-card *ngIf="currentUser?.pnpOffice" title="My PnP Office(s)" baCardClass="with-scroll">
+    <div *ngFor="let office of pnpOffices">
+      {{office}}
+    </div>
+  </ba-card>
 </div>
