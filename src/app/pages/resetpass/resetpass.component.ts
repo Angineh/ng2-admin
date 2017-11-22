@@ -3,15 +3,15 @@ import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/form
 import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-import { ForgotpassService } from './forgotpass.service';
+import { ResetpassService } from './resetpass.service';
 
 @Component({
-  selector: 'forgotpass',
+  selector: 'resetpass',
   encapsulation: ViewEncapsulation.None,
-  styles: [require('./forgotpass.scss'),require('../css/ng2-toastr.min.scss')],
-  template: require('./forgotpass.html'),
+  styles: [require('./resetpass.scss'),require('../css/ng2-toastr.min.scss')],
+  template: require('./resetpass.html'),
 })
-export class Forgotpass {
+export class Resetpass {
 
   public form:FormGroup;
   public email:AbstractControl;
@@ -19,14 +19,14 @@ export class Forgotpass {
   public submitted:boolean = false;
   public loading: boolean;
   jsonObj:any[];
-  constructor(fb:FormBuilder,private _forgotpassService: ForgotpassService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+  constructor(fb:FormBuilder,private _resetpassService: ResetpassService, public toastr: ToastsManager, vcr: ViewContainerRef) {
 
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, EmailValidator.validate])]
     });
 
     this.email = this.form.controls['email'];
-    this._forgotpassService = _forgotpassService;  
+    this._resetpassService = _resetpassService;  
     this.toastr.setRootViewContainerRef(vcr);   
   }
 
@@ -48,7 +48,7 @@ export class Forgotpass {
       json.api_key = "f7d624c2-f89e-40b9-9e4b-ff2db471a998";
       //console.log(JSON.stringify(json));
       var body: any;
-      this._forgotpassService.forgotpass(JSON.stringify(json)).map(res => {
+      this._resetpassService.resetpass(JSON.stringify(json)).map(res => {
       // If request fails, throw an Error that will be caught
       if(res.status == 204) {
         this.showError("Invalid email address. Please contact a Plug and Play representative.", "", 4000);
