@@ -25,6 +25,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'startups', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: () => System.import('./dashboard/dashboard.module') },
       { path: 'startups',  loadChildren: () => System.import('./startups/startups.module') },
+      { path: 'mystartups',  loadChildren: () => System.import('./mystartups/mystartups.module') },
       { path: 'newstartup',  loadChildren: () => System.import('./newstartup/newstartup.module') },
       { path: 'company',  loadChildren: () => System.import('./company/company.module') },
       { path: 'editcompany',  loadChildren: () => System.import('./editcompany/editcompany.module') },
