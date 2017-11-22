@@ -14,7 +14,6 @@ import { ConfirmModal } from './confirm.modal';
 import { EditModal } from './edit.modal';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
   imports: [
     CommonModule,
