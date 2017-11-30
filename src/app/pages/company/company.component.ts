@@ -58,7 +58,7 @@ export interface companyInt {
 export class CompanyComponent implements OnInit, OnDestroy {
   id: number;
   private sub: any;
-  company: companyInt;
+  company: any;
   top100: Object;
   top20: Object;
   lists: any[];
@@ -93,18 +93,16 @@ constructor(private route: ActivatedRoute, private _companyService: CompanyServi
     });
     this._companyService.getVenture(this.id).subscribe(data => this.company = data,
     error => console.error('Error: ' + error),
-        () => console.log('Completed!')
+        //() => console.log(JSON.stringify(this.company))
     );
     this._companyService.getTop100Lists().subscribe(data => this.lists = data,
-        error => console.error('Error: ' + error),
-        () => console.log('Completed!')
+        error => console.error('Error: ' + error)
     );
     this._companyService.getTop20Lists().subscribe(data => this.top20list = data,
-        error => console.error('Error: ' + error),
-        () => console.log('Completed!')
-    );
-    //console.log(this.company);
+        error => console.error('Error: ' + error)
+    );    
     this.pageload = true;
+
   }
 
   ngOnDestroy() {

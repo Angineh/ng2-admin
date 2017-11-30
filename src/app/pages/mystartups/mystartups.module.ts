@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { Ng2PaginationModule } from 'ng2-pagination'; 
 
-import { AdminComponent } from './admin.component';
-import { AdminService } from './admin.service';
-import { routing } from './admin.routing';
+import { MyStartupsComponent, SearchPipe, PipeFilter, SearchArrayPipe } from './mystartups.component';
+import { MyStartupsService } from './mystartups.service';
+import { routing } from './mystartups.routing';
 
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
+import { ModalComponent } from './custom.modal';
 import { FilterModal } from './filter.modal';
 import { ConfirmModal } from './confirm.modal';
-import { EditModal } from './edit.modal';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -19,26 +19,29 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     NgaModule,
-    routing,
     Ng2PaginationModule,
+    routing,
     BootstrapModalModule,
     ReactiveFormsModule
   ],
   entryComponents: [
+    ModalComponent,
     FilterModal,
-    ConfirmModal,
-    EditModal
+    ConfirmModal
   ],
   declarations: [
-    AdminComponent,
+    MyStartupsComponent,
+    SearchPipe,
+    PipeFilter,
+    SearchArrayPipe,
+    ModalComponent,
     FilterModal,
-    ConfirmModal,
-    EditModal
+    ConfirmModal
   ],
-  bootstrap:[ AdminComponent ],
+  bootstrap:[ MyStartupsComponent ],
   providers: [
-    AdminService
-  ],
+    MyStartupsService
+  ]
 
 })
-export default class AdminModule {}
+export default class MyStartupsModule {}
