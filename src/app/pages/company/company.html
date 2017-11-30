@@ -253,6 +253,32 @@
                 <p></p>
               </template>
             </md-tab>
+            <md-tab>
+              <template md-tab-label>Top 20</template>
+              <template md-tab-content>
+                <h1>Top 20</h1>
+                <ol>
+                  <li *ngFor="let top20 of company?.top20">
+                      <a [routerLink]="['/pages/top20', top20?.listName]" style="font-size: 12px; color: #ffffff; opacity: .54;" >{{top20?.listName}}</a>
+                  </li>
+                </ol>
+                <p></p>
+              </template>
+            </md-tab>
+            <md-tab>
+              <template md-tab-label>Top 100</template>
+              <template md-tab-content>
+                <h1>Top 100</h1>
+                <p></p>
+              </template>
+            </md-tab>
+            <md-tab>
+              <template md-tab-label>Batch</template>
+              <template md-tab-content>
+                <h1>Batch</h1>
+                <p></p>
+              </template>
+            </md-tab>
           </md-tab-group>
           </div>
 <!--          <div class="col-md-12" id="tabs">
