@@ -301,7 +301,7 @@ export class BaMenuService {
                     data: {
                       menu: {
                         title: 'Dashboard',
-                        icon: 'ion-android-home',
+                        icon: 'fa fa-tachometer',
                         selected: false,
                         expanded: false,
                         order: 0
@@ -316,6 +316,19 @@ export class BaMenuService {
               {
                 path: 'pages',
                 children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
                   {
                     path: 'startups',  // path for our page
                     data: { // custom menu declaration
@@ -350,6 +363,19 @@ export class BaMenuService {
               {
                 path: 'pages',
                 children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
                   {
                     path: 'mystartups',  // path for our page
                     data: { // custom menu declaration
@@ -416,6 +442,19 @@ export class BaMenuService {
                     }
                   },
                   {
+                    path: 'slack',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Slack', // menu title
+                        icon: 'fa fa-slack', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
                     path: 'dealflowlists',  // path for our page
                     data: { // custom menu declaration
                       menu: {
@@ -449,6 +488,19 @@ export class BaMenuService {
               {
                 path: 'pages',
                 children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
                   {
                     path: 'startups',  // path for our page
                     data: { // custom menu declaration
@@ -494,6 +546,19 @@ export class BaMenuService {
                       menu: {
                         title: 'Top 20', // menu title
                         icon: 'fa fa-building', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'slack',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Slack', // menu title
+                        icon: 'fa fa-slack', // menu icon
                         pathMatch: 'prefix', // use it if item children not displayed in menu
                         selected: false,
                         expanded: false,

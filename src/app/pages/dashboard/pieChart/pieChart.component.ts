@@ -37,8 +37,8 @@ export class PieChart {
         onStep: function (from, to, percent) {
           jQuery(this.el).find('.percent').text(Math.round(percent));
         },
-        barColor: jQuery(this).attr('data-rel'),
-        trackColor: 'rgba(0,0,0,0)',
+        barColor: 'rgb(64, 218, 241)',
+        trackColor: 'rgba(125, 125, 125, 0.5)',
         size: 84,
         scaleLength: 0,
         animation: 2000,
