@@ -6,8 +6,8 @@ import * as _ from 'lodash';
 export class BaThemeConfigProvider {
 
   basic = {
-    default: '#ffffff',
-    defaultText: '#ffffff',
+    default: '#000000',
+    defaultText: '#000000',
     border: '#dddddd',
     borderDark: '#aaaaaa',
   };

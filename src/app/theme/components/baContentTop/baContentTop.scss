@@ -19,7 +19,7 @@ h1.al-title {
 
 .al-breadcrumb {
   background: none;
-  color: $default-text;
+  color: black;
   padding: 0;
   margin: 0;
   float: right;
@@ -28,11 +28,11 @@ h1.al-title {
     font-size: 18px;
     font-weight: $font-normal;
     a {
-      color: $primary-light;
+      color: $primary;
     }
 
     &.breadcrumb-item.active {
-      color: $default-text;
+      color: $primary-dark;
     }
   }
 }

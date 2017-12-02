@@ -8,7 +8,7 @@
         <input #input type="text" [hidden]="filters?.length > 0" (keyup.enter)="luceneSearch($event)" class="form-control form-control-rounded" id="input03" placeholder="Search for...">
       </div> -->
       <div style="margin-bottom: 5px;">
-        <div #filterButton style="border-radius: 9px;display: inline;border: 1px solid rgba(255, 255, 255, .5);padding: 3px 5px 3px 5px;cursor: pointer;"(click)="filterModal()"> 
+        <div #filterButton style="border-radius: 9px;display: inline;border: 1px solid #21cd98;padding: 3px 5px 3px 5px;cursor: pointer;"(click)="filterModal()"> 
           <i class="fa fa-plus-circle" aria-hidden="true"></i>
           <p style="display:inline">Add Filter</p>
         </div>
@@ -49,7 +49,7 @@
             <div *ngIf="obj?.thumbnail" class="col-md-1" style="padding-left:0px;"><img src="data:image/png;base64,{{obj.thumbnail}}" alt="Business Profile" style="width:80px;"></div>
             <div class="col-md-5" style="padding-left:0px;">
               <a [routerLink]="['/pages/company', obj.id]">
-              <div style="font-size: 20px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa; padding-bottom: 5px">{{obj.companyName}} <p *ngIf="obj?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;display: inline;font-size: 12px;padding-left: 10px;color: goldenrod;text-shadow: 0px 0px 0px #ffffff;font-weight: 400;">PORTFOLIO COMPANY</p></div>              
+              <div style="font-size: 20px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; padding-bottom: 5px">{{obj.companyName}} <p *ngIf="obj?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;display: inline;font-size: 12px;padding-left: 10px;color: goldenrod;text-shadow: 0px 0px 0px #ffffff;font-weight: 400;">PORTFOLIO COMPANY</p></div>              
               </a>
               <div *ngIf="obj?.blurb" style="font-size: 11px; color: #000000; opacity: .54;">{{obj.blurb}}</div>
               <div *ngIf="obj?.website" style="overflow-wrap: break-word;font-size: 10px"><a style="color: #24a2ff" href="{{obj.website}}" target="_blank">{{obj.website}}</a></div>

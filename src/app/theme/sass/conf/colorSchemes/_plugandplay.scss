@@ -1,26 +1,26 @@
-$default: #ffffff; // default colors for layout
-$body-bg: #F0F3F4; // default bg color
+$default: #d4d4d4; // default colors for layout
+$body-bg: rgba(51, 51, 51, 0.5); // default bg color
 
-$default-text: $default; // default text color layout (usually is the same as $default)
+$default-text:rgba(68, 68, 68, 0.9); // default text color layout (usually is the same as $default)
 $content-text: $default-text; // content text color on card, panels, form, etc
 $help-text: $default-text; // additional text color for hits
 
 $label-text: $default-text; // labels color
 $disabled: rgba(255, 255, 255, 0.4); // color for disabled state
 $disabled-bg: tint($disabled, 15%); // background color for disable state
-$border: rgba(255, 255, 255, 0.5); // border color
-$border-light: rgba(255, 255, 255, 0.3); // lighter version of border color (for hovers)
-$input-border: rgba(255, 255, 255, 0.6); // input border color
+$border: rgba(51, 51, 51, 0.5); // border color
+$border-light: rgb(33, 205, 152); // lighter version of border color (for hovers)
+$input-border: #21cd98; // input border color
 $input-background: rgba(255, 255, 255, 0.1); // input border color for hover
-$dropdown-text: #7d7d7d; // dropdown text color
+$dropdown-text: rgb(125, 125, 125); // dropdown text color
 
 // sidebar colors
-$sidebar: #282828;
-$sidebar-text: #ffffff;
+$sidebar: #ffffff;
+$sidebar-text: black;
 
 // specific components colors
 $mail-box: whitesmoke;
-$auth-panel-background: #ffffff;
+$auth-panel-background: black;
 $progress-background: rgba(0, 0, 0, 0.15);
 $progress-default: rgba($default-text, 0.95);
 
@@ -33,7 +33,7 @@ $bootstrap-panel-header-border: 1px solid $border-light;
 $bootstrap-panel-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 
 // color scheme
-$primary: #999999 !default;
+$primary: #d4d4d4 !default;
 $info: #40daf1 !default;
 $success: #8bd22f !default;
 $warning: #e7ba08 !default;
@@ -71,7 +71,7 @@ $hoverlink: darken($activelink, 20%);
 @mixin body-bg() {
   background-color: $body-bg;
 
-  $mainBgUrl: $images-root + 'peachy-bg.jpg';
+  $mainBgUrl: $images-root + 'white-bg.jpg';
 
   &::before {
     content: '';
