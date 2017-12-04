@@ -33,7 +33,7 @@
 .form-group {
   label {
     margin-bottom: 5px;
-    color: #21cd98;
+    color: $default-text;
     font-weight: $font-normal;
     font-size: 13px;
   }
@@ -387,7 +387,7 @@ label.custom-input-danger {
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: $input-background;
   color: $disabled;
-  border-color: $disabled-bg;
+  border-color: $input-border;
   @include placeholderStyle($default-text, 0.5);
 }
 

@@ -32,7 +32,7 @@
           </div>
           <div *ngIf="!loading && !error">
           
-          <div class="col-md-12" style="padding-top:15px;padding-bottom:15px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" *ngFor="let obj of companies | smArraySearch: input.value">
+          <div class="col-md-12" style="padding-top:15px;padding-bottom:15px;border:1px solid #cac3ca; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" *ngFor="let obj of companies | smArraySearch: input.value">
             <div [ngStyle]="overlay">
             <div class="col-md-1" style="padding-left:0px;"><!--<h1>{{obj?.dealflow.order}}</h1>-->
              <div *ngFor="let list of obj.dealflow">
