@@ -33,7 +33,7 @@
 
         <div class="row show-grid">
           <div *ngFor="let obj of asyncCompanies | async | paginate: { id: 'server', itemsPerPage: 10, currentPage: p, totalItems: total }"> <!--| smArraySearch: input.value-->
-            <div *ngIf="!loading && !error" class="col-md-12" style="padding-top:15px;padding-bottom:15px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" >
+            <div *ngIf="!loading && !error" class="col-md-12" style="border:1px solid #cac3ca;padding-top:15px;padding-bottom:15px;border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" >
             <div *ngIf="!obj?.thumbnail" class="col-md-1" style="padding-left:0px;"><img src="https://3.bp.blogspot.com/-FI6eeNNTcy4/VPw04yX3_qI/AAAAAAAAAFk/vEocwQMf0-8/s1600/startup-512.png" alt="Business Profile" style="width:80px;height:80px;"></div>
             <div *ngIf="obj?.thumbnail" class="col-md-1" style="padding-left:0px;"><img src="data:image/png;base64,{{obj.thumbnail}}" alt="Business Profile" style="width:80px;"></div>
             <div class="col-md-5" style="padding-left:0px;">
@@ -51,7 +51,7 @@
               <div *ngIf="obj?.tags" style="font-size: 10px; color: #000000; opacity: .38;">Tags:</div>
               <div *ngIf="obj?.tags" style="font-size: 12px; color: #000000; opacity: .54;word-wrap:break-word;">{{obj.tags}}</div>
             </div>
-            <div class="col-md-3" *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(obj?.pnpOffice))">
+            <div class="col-md-3" style="padding-right:5px;" *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(obj?.pnpOffice))">
               <div> 
                   <button class="top20btn" (click)="top20Modal(obj)">20</button>
                   <button class="top100btn" (click)="top100Modal(obj)">100</button>
