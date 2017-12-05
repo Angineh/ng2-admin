@@ -223,6 +223,7 @@ export class BaMenuService {
                   children: [
                     { path: '', redirectTo: 'mystartups', pathMatch: 'full' },
                     { path: 'dashboard', loadChildren: () => System.import('../../../pages/dashboard/dashboard.module') },
+                    { path: 'corporations',  loadChildren: () => System.import('../../../pages/corporations/corporations.module') },
                     { path: 'startups',  loadChildren: () => System.import('../../../pages/startups/startups.module') },
                     { path: 'mystartups',  loadChildren: () => System.import('../../../pages/mystartups/mystartups.module') },
                     { path: 'newstartup',  loadChildren: () => System.import('../../../pages/newstartup/newstartup.module') },
@@ -268,6 +269,7 @@ export class BaMenuService {
                 children: [
                   { path: '', redirectTo: 'startups', pathMatch: 'full' },
                   { path: 'dashboard', loadChildren: () => System.import('../../../pages/dashboard/dashboard.module') },
+                  { path: 'corporations',  loadChildren: () => System.import('../../../pages/corporations/corporations.module') },
                   { path: 'startups',  loadChildren: () => System.import('../../../pages/startups/startups.module') },
                   { path: 'newstartup',  loadChildren: () => System.import('../../../pages/newstartup/newstartup.module') },
                   { path: 'company',  loadChildren: () => System.import('../../../pages/company/company.module') },
@@ -403,6 +405,19 @@ export class BaMenuService {
                     }
                   },
                   {
+                    path: 'corporations',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Corporations', // menu title
+                        icon: 'fa fa-university', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
                     path: 'portfolio',  // path for our page
                     data: { // custom menu declaration
                       menu: {
@@ -494,6 +509,19 @@ export class BaMenuService {
                       menu: {
                         title: 'Startups', // menu title
                         icon: 'fa fa-plug', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'corporations',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Corporations', // menu title
+                        icon: 'fa fa-university', // menu icon
                         pathMatch: 'prefix', // use it if item children not displayed in menu
                         selected: false,
                         expanded: false,
