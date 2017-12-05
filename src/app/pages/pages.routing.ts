@@ -27,6 +27,7 @@ const routes: Routes = [
       { path: 'startups',  loadChildren: () => System.import('./startups/startups.module') },
       { path: 'mystartups',  loadChildren: () => System.import('./mystartups/mystartups.module') },
       { path: 'newstartup',  loadChildren: () => System.import('./newstartup/newstartup.module') },
+      { path: 'newcorporation',  loadChildren: () => System.import('./newcorporation/newcorporation.module') },
       { path: 'company',  loadChildren: () => System.import('./company/company.module') },
       { path: 'editcompany',  loadChildren: () => System.import('./editcompany/editcompany.module') },
       { path: 'portfolio',  loadChildren: () => System.import('./portfolio/portfolio.module') },
