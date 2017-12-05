@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 import { NewCorporationService } from './newcorporation.service';
 
-const URL = '/rest/plugandplay/api/v1/ventures/create';
+const URL = '/rest/plugandplay/api/v1/corporations/create';
 //const URL = 'http://localhost:8080/plugandplay/api/v1/ventures/create';
 
 @Component({
@@ -112,33 +112,13 @@ newCorporation2() {
       revenue : null,
       membership : null,
       ceo : null,
-      headQuarters : null,
+      headquarters : null,
       website : null,
       summary : null,
-      verticals : null,
       topInterests : null,
       incentive : null,
       pressReleases : null,
       pilotsAndInnovation : null,
-      pnpContact : null,
-      contactName : null,
-      email : null,
-      totalMoneyRaised : null,
-      stage : null,
-      b2bb2c : null,
-      employees : null,
-      location : null,
-      city : null,
-      competition : null,
-      advantage : null,
-      background : null,
-      partnerInterests : null,
-      caseStudy : null,
-      comments : null,
-      tags : null,
-      materials : null,
-      dateOfInvestment : null,
-      portfolio : false
     } 
   }
 }

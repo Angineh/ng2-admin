@@ -102,9 +102,9 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
-        <label for="headQuarters">Headquarters</label>
+        <label for="headquarters">Headquarters</label>
         <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
-        <input type="text" class="form-control" maxlength="200" id="headQuarters" value="{{company?.headQuarters}}" placeholder="Headquarters" [(ngModel)]="formData.headQuarters" name="headQuarters" required>
+        <input type="text" class="form-control" maxlength="200" id="headquarters" value="{{company?.headquarters}}" placeholder="Headquarters" [(ngModel)]="formData.headquarters" name="headquarters" required>
       </div>
     </div>
   </div>
@@ -130,8 +130,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="summary">Summary</label>
-        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
-        <input type="text" class="form-control" maxlength="200" id="summary" value="{{company?.summary}}" placeholder="Summary" [(ngModel)]="formData.summary" name="summary" required>
+        <textarea class="form-control" maxlength="2000" id="summary" value="{{company?.summary}}" placeholder="Summary" [(ngModel)]="formData.summary" name="summary"></textarea>
       </div>
     </div>
   </div>
@@ -184,204 +183,6 @@
         <label for="pilotsAndInnovation">Pilots And Innovation</label>
         <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
         <input type="text" class="form-control" maxlength="200" id="pilotsAndInnovation" value="{{company?.pilotsAndInnovation}}" placeholder="Pilots and Innovation" [(ngModel)]="formData.pilotsAndInnovation" name="pilotsAndInnovation" required>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="verticals">Industrial Applications and PnP Vertical</label>
-        <select multiple class="form-control" id="verticals" [(ngModel)]="formData.verticals" name="verticals">
-          <option>Brand and Retail</option>
-          <option>Fintech</option>
-          <option>Insurtech</option>
-          <option>Travel and Hospitality</option>
-          <option>Mobility</option>
-          <option>Health and Wellness</option>
-          <option>Media</option>
-          <option>Materials</option>
-          <option>Food & Beverage</option>
-          <option>Sustainability</option>
-          <option>Supply Chain and Logistics</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="totalMoneyRaised">Total Money Raised (Optional)</label>
-        <input type="text" class="form-control" maxlength="500" id="totalMoneyRaised" value="{{company?.totalMoneyRaised}}" placeholder="Total Money Raised" [(ngModel)]="formData.totalMoneyRaised" name="totalMoneyRaised">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-      <label for="stage">Stage of Company (Last Closed Round)</label>
-        <select class="form-control" id="stage" [(ngModel)]="formData.stage" name="stage">
-          <option selected="selected">No Investment</option>
-          <option>Pre-seed</option>
-          <option>Seed</option>
-          <option>Series A</option>
-          <option>Series B</option>
-          <option>Series C</option>
-          <option>Series D</option>
-          <option>Series E+</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-      <label for="b2bb2c">What is your end customer? (Optional)</label>
-      <select multiple class="form-control" id="b2bb2c" [(ngModel)]="formData.b2bb2c" name="b2bb2c">
-        <option>B2B</option>
-        <option>B2C</option>
-        <option>B2B2C</option>
-      </select>
-    </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="employees">Number of Employees (Full-time/Part-time)</label>
-        <input type="text" class="form-control" maxlength="200" id="employees" value="{{company?.employees}}" placeholder="Employees" [(ngModel)]="formData.employees" name="employees">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-      <label for="location">Where is your HQ?</label>
-        <select class="form-control" id="location" [(ngModel)]="formData.location" name="location">
-          <option selected="selected">PnP HQ</option>
-          <option>Bay Area</option>
-          <option>North America</option>
-          <option>Europe</option>
-          <option>Asia</option>
-          <option>South America</option>
-          <option>Africa</option>
-          <option>Australia</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="city">Specify name of the Country and City (Optional)</label>
-        <input type="text" class="form-control" maxlength="200" id="city" value="{{company?.city}}" placeholder="City" [(ngModel)]="formData.city" name="city">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="competition">Closest Competitor</label>
-        <textarea class="form-control" maxlength="2000" id="competition" value="{{company?.competition}}" placeholder="Competition" [(ngModel)]="formData.competition" name="competition"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="advantage">Competitive Advantage (IP's, advantage, etc.)</label>
-        <textarea class="form-control" maxlength="3000" id="advantage" value="{{company?.advantage}}" placeholder="Advantage" [(ngModel)]="formData.advantage" name="advantage"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="background">Founders' Background</label>
-        <textarea class="form-control" maxlength="2000" id="background" value="{{company?.background}}" placeholder="Background" [(ngModel)]="formData.background" name="background"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="founded">When was the company founded? (Optional)</label>
-        <input type="text" class="form-control" maxlength="200" id="founded" value="{{company?.founded}}" placeholder="Founded" [(ngModel)]="formData.founded" name="founded">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="partnerInterests">TOP 3 PnP partners that you would like to be introduced to (Optional)</label>
-        <input type="text" class="form-control" maxlength="200" id="partnerInterests" value="{{company?.partnerInterests}}" placeholder="Partner Interests" [(ngModel)]="formData.partnerInterests" name="partnerInterests">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="caseStudy">Example of a case study (Optional)</label>
-        <textarea class="form-control" maxlength="3500" id="caseStudy" value="{{company?.caseStudy}}" placeholder="Case Study" [(ngModel)]="formData.caseStudy" name="caseStudy"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="comments">Any other information or comments that can help us (Optional)</label>
-        <textarea class="form-control" maxlength="3000" id="comments" value="{{company?.comments}}" placeholder="Comments" [(ngModel)]="formData.comments" name="comments"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="tags">Select some tags (Optional)</label>
-        <select multiple class="form-control" id="tags" [(ngModel)]="formData.tags" name="tags">
-          <option>Blockchain</option>
-          <option>Wearables</option>
-          <option>Data tools</option>
-          <option>Robotics</option>
-          <option>Mobility</option>
-          <option>Analytics</option>
-          <option>VR/AR</option>
-          <option>Adtech</option>
-          <option>Agtech</option>
-          <option>Edtech</option>
-          <option>Hardware</option>
-          <option>Energy</option>
-          <option>Infrastructure</option>
-          <option>SaaS</option>
-          <option>Enterprise</option>
-          <option>Cloud</option>
-          <option>Digitalization</option>
-          <option>FashionTech</option>
-          <option>Logistics</option>
-          <option>UX/UI</option>
-          <option>Social</option>
-          <option>Payments</option>
-          <option>AI</option>
-          <option>Conn. Car</option>
-          <option>Smart Home</option>
-          <option>Indust. IoT</option>
-          <option>E-commerce</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="materials">Please upload your company materials (Optional)</label>
-        <input type="text" class="form-control" maxlength="1000" id="materials" value="{{company?.materials}}" placeholder="Materials" [(ngModel)]="formData.materials" name="materials">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="dateOfInvestment">Date Of Investment (Optional)</label>
-        <input type="date" class="form-control" maxlength="200" id="dateOfInvestment" value="{{company?.dateOfInvestment}}" placeholder="Date Of Investment" [(ngModel)]="formData.dateOfInvestment" name="dateOfInvestment">
       </div>
     </div>
   </div>
