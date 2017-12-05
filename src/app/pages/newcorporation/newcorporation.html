@@ -23,7 +23,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label for="type">Type</label>
-        <select multiple class="form-control" id="type" [(ngModel)]="formData.type" name="type">
+        <select class="form-control" id="type" [(ngModel)]="formData.type" name="type">
           <option>Reinsurance</option>
           <option>Reinsurer</option>
           <option>Carrier</option>
@@ -204,14 +204,6 @@
           <option>Sustainability</option>
           <option>Supply Chain and Logistics</option>
         </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input type="text" class="form-control" maxlength="200"  id="phoneNumber" value="{{company?.phoneNumber}}" placeholder="Phone Number" [(ngModel)]="formData.phoneNumber" name="phoneNumber">
       </div>
     </div>
   </div>
