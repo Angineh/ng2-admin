@@ -1,0 +1,102 @@
+<div class="widgets">
+
+  <div class="row">
+    <div class="col-md-12">
+
+    <ba-card baCardClass="with-scroll"> <!--<ba-card title="Explore" baCardClass="with-scroll">-->
+      <!-- <div class="form-group"> 
+        <input #input type="text" [hidden]="filters?.length > 0" (keyup.enter)="luceneSearch($event)" class="form-control form-control-rounded" id="input03" placeholder="Search for...">
+      </div> -->
+      <div style="margin-bottom: 5px;">
+        <div #filterButton style="border-radius: 9px;display: inline;border: 1px solid #21cd98;padding: 3px 5px 3px 5px;cursor: pointer;"(click)="filterModal()"> 
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          <p style="display:inline">Add Filter</p>
+        </div>
+      </div>
+
+      <!-- <form #filterForm="ngForm" (ngSubmit)="filterSearch(filterForm)"> -->
+      <form [formGroup]="filterForm" (ngSubmit)="filterSearch(filterForm)">
+        <div class="row show-grid">
+          <div class="col-md-3" style="margin-top:5px;margin-bottom:5px;" *ngFor="let filter of filters;">
+            <div class="col-md-12" style="padding-left:0px;padding-right:2px;"> 
+              <!-- <p style="display:inline">{{filter.name}}</p> -->
+             <div class="form-group" style="margin-bottom:0px;">
+                  <label style="margin-bottom: 0px;margin-bottom: 0px;margin-left: 3px;">{{filter.name}}</label>
+                  <i (click)="removeFilter(filter.name)" style="cursor: pointer;float:right;margin-right: 1px;margin-top: 2px;" class="fa fa-window-close" aria-hidden="true"></i>
+                  <input type="text" class="form-control" [formControlName]="filter.name" maxlength="200" name="{{filter.name}}"> <!-- [(ngModel)]="filter.name" -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <button style="margin-top:3px;margin-bottom:3px;" *ngIf="filters?.length > 0" type="submit" (click)="initSearch()" class="btn btn-primary">Search</button>
+      </form>
+
+        <div class="row show-grid">
+          <div class="col-md-10">
+            <pagination-controls  class="my-pagination" (pageChange)="getPage($event)" id="server"></pagination-controls>  
+          </div>
+          <div *ngIf="role=='admin' || role=='venture' || role=='global'" class="col-md-2">                   
+              <a [routerLink]="['/pages/newstartup']">
+                <div class="button-wrapper">
+                  <button type="button" id="exportpdf" class="btn btn-default btn-raised" style="float:right;">New Startup</button>
+                </div>
+              </a>
+          </div>
+          
+          <div *ngFor="let obj of asyncCompanies | async | paginate: { id: 'server', itemsPerPage: 10, currentPage: p, totalItems: total }"> <!--| smArraySearch: input.value-->
+            <div *ngIf="!loading && !error" class="col-md-12" style="padding-top:15px;padding-bottom:15px;border:1px solid #cac3ca;border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" >
+            <div *ngIf="!obj?.thumbnail" class="col-md-1" style="padding-left:0px;"><img src="https://3.bp.blogspot.com/-FI6eeNNTcy4/VPw04yX3_qI/AAAAAAAAAFk/vEocwQMf0-8/s1600/startup-512.png" alt="Business Profile" style="width:80px;height:80px;"></div>
+            <div *ngIf="obj?.thumbnail" class="col-md-1" style="padding-left:0px;"><img src="data:image/png;base64,{{obj.thumbnail}}" alt="Business Profile" style="width:80px;"></div>
+            <div class="col-md-5" style="padding-left:0px;">
+              <a [routerLink]="['/pages/company', obj.id]">
+              <div style="font-size: 20px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; padding-bottom: 5px">{{obj.companyName}} <p *ngIf="obj?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;display: inline;font-size: 12px;padding-left: 10px;color: goldenrod;text-shadow: 0px 0px 0px #ffffff;font-weight: 400;">PORTFOLIO COMPANY</p></div>              
+              </a>
+              <div *ngIf="obj?.blurb" style="font-size: 11px; color: #000000; opacity: .54;">{{obj.blurb}}</div>
+              <div *ngIf="obj?.website" style="overflow-wrap: break-word;font-size: 10px"><a style="color: #24a2ff" href="{{obj.website}}" target="_blank">{{obj.website}}</a></div>
+              <div *ngIf="obj?.city" style="font-size: 13px; color: #000000; opacity: .38; font-weight: 400">{{obj.city}}</div>
+              <div *ngIf="obj?.location" style="font-size: 12px; color: #000000; opacity: .38;">{{obj.location}}</div>
+            </div>
+            <div class="col-md-3">
+              <div *ngIf="obj?.verticals" style="font-size: 10px; color: #000000; opacity: .38;">Verticals:</div>
+              <div *ngIf="obj?.verticals" style="font-size: 12px; color: #000000; opacity: .54;word-wrap:break-word;">{{obj.verticals}}</div>
+              <div *ngIf="obj?.tags" style="font-size: 10px; color: #000000; opacity: .38;">Tags:</div>
+              <div *ngIf="obj?.tags" style="font-size: 12px; color: #000000; opacity: .54;word-wrap:break-word;">{{obj.tags}}</div>
+            </div>
+            <div class="col-md-3" *ngIf="role=='admin' || role=='venture' || (role=='global' && currentUser?.pnpOffice.includes(obj?.pnpOffice))">
+              <div> 
+                  <button class="top20btn" (click)="top20Modal(obj)">20</button>
+                  <button class="top100btn" (click)="top100Modal(obj)">100</button>
+                  <button class="batchbtn" (click)="batchModal(obj)">Batch</button>
+                  <button class="dealflowbtn" (click)="dealflowModal(obj)">Dealflow</button>
+                  <div  *ngIf="role=='admin'"  style="display:inline;float:right;">
+                    <a class="deleteStartup" href="javascript:void(0)" (click)="deleteStartup(obj)">
+                    <span title="Delete startup"><i style="color:black" class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                  </div>
+              </div>
+              <div *ngIf="obj?.pnpContact" style="font-size: 10px; color: #000000; opacity: .38;">Account Manager:</div>
+              <div *ngIf="obj?.pnpContact" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.pnpContact}}</div>
+              <div *ngIf="obj?.contactName" style="font-size: 10px; color: #000000; opacity: .38;">Primary Contact:</div>
+              <div *ngIf="obj?.contactName" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.contactName}}</div> 
+              <div *ngIf="obj?.email" style="font-size: 10px; color: #000000; opacity: .38;">Email:</div>
+              <div *ngIf="obj?.email" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.email}}</div>
+            </div>
+            <div *ngIf="role=='user'" class="col-md-3">
+              <div *ngIf="obj?.stage" style="font-size: 10px; color: #000000; opacity: .38;">Stage:</div>
+              <div *ngIf="obj?.stage" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.stage}}</div>
+              <div *ngIf="obj?.competition" style="font-size: 10px; color: #000000; opacity: .38;">Competition:</div>
+              <div *ngIf="obj?.competition" style="font-size: 12px; color: #000000; opacity: .54;">{{obj.competition}}</div> 
+            </div>
+            </div>
+          </div>
+          <div *ngIf="loading" style="margin: 0 auto;width: 100px;">
+            <div class="spinner"></div>
+          </div>
+          <div *ngIf="error" style="margin: 0 auto;width: 500px;">
+            <p>We could not find any documents, please try again.</p>
+          </div>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+
+</div>

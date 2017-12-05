@@ -14,7 +14,7 @@
         <div class="input-group">
           <input #batchlist type="text" class="form-control" placeholder="Create a new batch list!">
           <span class="input-group-btn">
-              <button (click)="addBatchList(batchlist.value);batchlist.value=''" style="background-color: #282828;border-color: #ffffff;"class="btn btn-danger" type="button">Add!</button>
+              <button (click)="addBatchList(batchlist.value);batchlist.value=''" style="background-color: #21cd98;border-color: #ffffff;"class="btn btn-danger" type="button">Add!</button>
           </span>
         </div>
         </div>
@@ -24,12 +24,12 @@
             <div style="margin-left:5px; margin-right:5px;">
             <div *ngIf="!loading && !error">
             <div [ngStyle]="overlay">
-            <div style="padding-top: 10px;padding-bottom: 25px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
+            <div style="padding-top: 10px;padding-bottom: 25px;border:1px solid #cac3ca;border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
                <a [routerLink]="['/pages/batch', list.listName]">
-                  <div class="col-md-10" style="font-size: 18px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa;">{{list.listName}}</div>
+                  <div class="col-md-10" style="font-size: 18px; color: rgba(68, 68, 68, 0.9); opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; ">{{list.listName}}</div>
                </a>
                <div class="col-md-2">
-                  <i class="fa fa-archive" (click)="archiveList(list.id)" aria-hidden="true" style="cursor: pointer;display:inline-block;color:#3c3c3c;padding-left: 10px;font-size: 18px;"></i>
+                  <i class="fa fa-archive" (click)="archiveList(list.id)" aria-hidden="true" style="cursor: pointer;display:inline-block;color:#21cd98;padding-left: 10px;font-size: 18px;"></i>
                </div>
             </div>
             </div>
@@ -57,9 +57,9 @@
             <div style="margin-left:5px; margin-right:5px;">
             <div *ngIf="!loading && !errorArchived">
             <div [ngStyle]="overlay">
-            <div style="padding-top: 10px;padding-bottom: 25px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
+            <div style="padding-top: 10px;padding-bottom: 25px;border:1px solid #cac3ca;border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);">
                <a [routerLink]="['/pages/batch', list.listName]">
-                  <div class="col-md-10" style="font-size: 18px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa;">{{list.listName}}</div>
+                  <div class="col-md-10" style="font-size: 18px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif;">{{list.listName}}</div>
                </a>
                <div class="col-md-2">
                   <i class="fa fa-arrow-up" (click)="unarchiveList(list.id)" aria-hidden="true" style="cursor: pointer;display:inline-block;color:#3c3c3c;padding-left: 10px;font-size: 18px;"></i>

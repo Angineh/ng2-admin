@@ -36,6 +36,7 @@ export class SettingsComponent implements OnInit {
   public passwords:FormGroup;
   public submitted:boolean = false;
   role: Observable<any>;
+  public pnpOffices: any[];
   
 
 constructor(fb:FormBuilder, private route: ActivatedRoute, private _userService: SettingsService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private _menuService: BaMenuService) {
@@ -63,6 +64,10 @@ constructor(fb:FormBuilder, private route: ActivatedRoute, private _userService:
       var bytes  = CryptoJS.AES.decrypt(localStorage.getItem('currentUser'), 'pnp4life!');
       this.currentUser = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
       this.role = this.currentUser.role;
+      if(this.currentUser.pnpOffice){
+        this.pnpOffices = this.currentUser.pnpOffice.split(",")
+      }
+      
       
 
 }

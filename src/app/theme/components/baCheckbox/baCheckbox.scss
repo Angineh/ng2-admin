@@ -5,10 +5,10 @@
     color: $content-text;
   }
   .form-control {
-    border: 1px solid $color;
+    border: 1px solid #21cd98;
     &:focus {
       box-shadow: none;
-      border-color: $focusColor;
+      border-color: #21cd98;
     }
   }
   label.custom-checkbox {

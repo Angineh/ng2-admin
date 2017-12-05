@@ -199,7 +199,52 @@ export class BaMenuService {
                 ]
               }
             ];
-            
+            }else if(currentUser.role == "global"){
+              return [
+                {
+                  path: 'login',
+                  loadChildren: () => System.import('../../../pages/login/login.module')
+                },
+                {
+                  path: 'register',
+                  loadChildren: () => System.import('../../../pages/register/register.module')
+                },
+                {
+                  path: 'verify',
+                  loadChildren: () => System.import('../../../pages/verify/verify.module')
+                },
+                {
+                  path: 'forgotpass',
+                  loadChildren: () => System.import('../../../pages/forgotpass/forgotpass.module')
+                },
+                {
+                  path: 'pages',
+                  component: Pages,
+                  children: [
+                    { path: '', redirectTo: 'mystartups', pathMatch: 'full' },
+                    { path: 'dashboard', loadChildren: () => System.import('../../../pages/dashboard/dashboard.module') },
+                    { path: 'corporations',  loadChildren: () => System.import('../../../pages/corporations/corporations.module') },
+                    { path: 'startups',  loadChildren: () => System.import('../../../pages/startups/startups.module') },
+                    { path: 'mystartups',  loadChildren: () => System.import('../../../pages/mystartups/mystartups.module') },
+                    { path: 'newstartup',  loadChildren: () => System.import('../../../pages/newstartup/newstartup.module') },
+                    { path: 'newcorporation',  loadChildren: () => System.import('../../../pages/newcorporation/newcorporation.module') },
+                    { path: 'company',  loadChildren: () => System.import('../../../pages/company/company.module') },
+                    { path: 'editcompany',  loadChildren: () => System.import('../../../pages/editcompany/editcompany.module') },
+                    { path: 'portfolio',  loadChildren: () => System.import('../../../pages/portfolio/portfolio.module') },
+                    { path: 'top100lists',  loadChildren: () => System.import('../../../pages/top100lists/top100lists.module') },
+                    { path: 'top100',  loadChildren: () => System.import('../../../pages/top100/top100.module') },
+                    { path: 'top20lists',  loadChildren: () => System.import('../../../pages/top20lists/top20lists.module') },
+                    { path: 'top20',  loadChildren: () => System.import('../../../pages/top20/top20.module') },
+                    { path: 'dealflowlists',  loadChildren: () => System.import('../../../pages/dealflowlists/dealflowlists.module') },
+                    { path: 'dealflow',  loadChildren: () => System.import('../../../pages/dealflow/dealflow.module') },
+                    { path: 'batchlists',  loadChildren: () => System.import('../../../pages/batchlists/batchlists.module') },
+                    { path: 'batch',  loadChildren: () => System.import('../../../pages/batch/batch.module') },
+                    { path: 'settings',  loadChildren: () => System.import('../../../pages/settings/settings.module') },
+                    { path: 'admin',  loadChildren: () => System.import('../../../pages/admin/admin.module') },
+                    //{ path: 'arbitrage',  loadChildren: () => System.import('./arbitrage/arbitrage.module') }
+                  ]
+                }
+              ];
             }else{
             //const routes: Routes 
             return [
@@ -225,8 +270,10 @@ export class BaMenuService {
                 children: [
                   { path: '', redirectTo: 'startups', pathMatch: 'full' },
                   { path: 'dashboard', loadChildren: () => System.import('../../../pages/dashboard/dashboard.module') },
+                  { path: 'corporations',  loadChildren: () => System.import('../../../pages/corporations/corporations.module') },
                   { path: 'startups',  loadChildren: () => System.import('../../../pages/startups/startups.module') },
                   { path: 'newstartup',  loadChildren: () => System.import('../../../pages/newstartup/newstartup.module') },
+                  { path: 'newcorporation',  loadChildren: () => System.import('../../../pages/newcorporation/newcorporation.module') },
                   { path: 'company',  loadChildren: () => System.import('../../../pages/company/company.module') },
                   { path: 'editcompany',  loadChildren: () => System.import('../../../pages/editcompany/editcompany.module') },
                   { path: 'portfolio',  loadChildren: () => System.import('../../../pages/portfolio/portfolio.module') },
@@ -258,7 +305,7 @@ export class BaMenuService {
                     data: {
                       menu: {
                         title: 'Dashboard',
-                        icon: 'ion-android-home',
+                        icon: 'fa fa-tachometer',
                         selected: false,
                         expanded: false,
                         order: 0
@@ -273,6 +320,19 @@ export class BaMenuService {
               {
                 path: 'pages',
                 children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
                   {
                     path: 'startups',  // path for our page
                     data: { // custom menu declaration
@@ -302,18 +362,168 @@ export class BaMenuService {
                 ]
               }
             ];
-          
-          }else{
+          }else if (currentUser.role == "global") {
             return [
               {
                 path: 'pages',
                 children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'mystartups',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'My Startups', // menu title
+                        icon: 'fa fa-globe', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
                   {
                     path: 'startups',  // path for our page
                     data: { // custom menu declaration
                       menu: {
                         title: 'Startups', // menu title
                         icon: 'fa fa-plug', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'corporations',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Corporations', // menu title
+                        icon: 'fa fa-university', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'portfolio',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Portfolio', // menu title
+                        icon: 'fa fa-certificate', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'top100lists',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Top 100', // menu title
+                        icon: 'fa fa-trophy', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'top20lists',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Top 20', // menu title
+                        icon: 'fa fa-building', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'dealflowlists',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dealflow', // menu title
+                        icon: 'fa fa-exchange', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'batchlists',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Batch', // menu title
+                        icon: 'fa fa-stack-overflow', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  }
+                ]
+              }
+            ];
+          }else{
+            return [
+              {
+                path: 'pages',
+                children: [
+                  {
+                    path: 'dashboard',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Dashboard', // menu title
+                        icon: 'fa fa-tachometer', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'startups',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Startups', // menu title
+                        icon: 'fa fa-plug', // menu icon
+                        pathMatch: 'prefix', // use it if item children not displayed in menu
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                      }
+                    }
+                  },
+                  {
+                    path: 'corporations',  // path for our page
+                    data: { // custom menu declaration
+                      menu: {
+                        title: 'Corporations', // menu title
+                        icon: 'fa fa-university', // menu icon
                         pathMatch: 'prefix', // use it if item children not displayed in menu
                         selected: false,
                         expanded: false,

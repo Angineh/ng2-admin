@@ -26,7 +26,7 @@
           </div>
           <div *ngIf="!loading && !error">
           
-          <div class="col-md-12" style="padding-top:15px;padding-bottom:15px;box-sizing: border-box; border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" *ngFor="let obj of companies | smArraySearch: input.value">
+          <div class="col-md-12" style="border:1px solid #cac3ca;padding-top:15px;padding-bottom:15px;border-radius: 7px;margin-bottom: 10px; background-color: rgba(255, 255, 255, 0.8);" *ngFor="let obj of companies | smArraySearch: input.value">
             <div [ngStyle]="overlay">
             <div class="col-md-1" style="padding-left:0px;"><!--<h1>{{obj?.batch.order}}</h1>-->
              <div *ngFor="let list of obj.batch">
@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-5" style="padding-left:0px;">
               <a [routerLink]="['/pages/company', obj.id]">
-              <div style="font-size: 20px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; text-shadow: 1px 1px 1px #aaaaaa; padding-bottom: 5px">{{obj.companyName}} <p *ngIf="obj?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;display: inline;font-size: 12px;padding-left: 10px;color: goldenrod;text-shadow: 0px 0px 0px #ffffff;font-weight: 400;">PORTFOLIO COMPANY</p></div>
+              <div style="font-size: 20px; color: #000000; opacity: .87; font-family: 'Arial Narrow', Arial, sans-serif; padding-bottom: 5px">{{obj.companyName}} <p *ngIf="obj?.portfolio" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;display: inline;font-size: 12px;padding-left: 10px;color: goldenrod;text-shadow: 0px 0px 0px #ffffff;font-weight: 400;">PORTFOLIO COMPANY</p></div>
               
               </a>
               <div *ngIf="obj?.blurb" style="font-size: 11px; color: #000000; opacity: .54;">{{obj.blurb}}</div>

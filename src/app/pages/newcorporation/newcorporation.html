@@ -1,0 +1,219 @@
+<div class="widgets">
+  <ba-card title="Create A New Corporation Profile" baCardClass="with-scroll">
+  <form #companyForm="ngForm" (ngSubmit)="newStartup()">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="companyName">Name of Company</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200"  id="companyName" value="{{company?.companyName}}" placeholder="Company Name" [(ngModel)]="formData.companyName" name="companyName" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+     <div class="col-sm-12">
+      <div class="form-group">
+          <label for="single">Corporation Logo</label>
+          <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+          <input type="file" class="form-control" name="single" accept="image/gif, image/jpeg, image/png, image/bmp" [uploader]="uploader" ng2FileSelect required/>                               
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select class="form-control" id="type" [(ngModel)]="formData.type" name="type">
+          <option>Reinsurance</option>
+          <option>Reinsurer</option>
+          <option>Carrier</option>
+          <option>Broker</option>
+          <option>TPA</option>
+          <option>MGA</option>
+          <option>General Agency</option>
+          <option>Clearing House</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="products">Products</label>
+        <select multiple class="form-control" id="products" [(ngModel)]="formData.products" name="products">
+          <option>Reinsurance</option>
+          <option>Liability</option>
+          <option>Legal</option>
+          <option>Auto</option>
+          <option>Health</option>
+          <option>Care</option>
+          <option>Pension</option>
+          <option>Travel</option>
+          <option>Life</option>
+          <option>Disability</option>
+          <option>Accident</option>
+          <option>Household Good</option>
+          <option>Buildings</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="founded">Founded</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="founded" value="{{company?.founded}}" placeholder="Founded" [(ngModel)]="formData.founded" name="founded" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="revenue">Revenue</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="revenue" value="{{company?.revenue}}" placeholder="Revenue" [(ngModel)]="formData.revenue" name="revenue" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="membership">Membership</label>
+        <select class="form-control" id="membership" [(ngModel)]="formData.membership" name="membership">
+          <option>Anchor-seed</option>
+          <option>Eco+</option>
+          <option>Ecosystem</option>
+          <option>JV</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="ceo">CEO</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="ceo" value="{{company?.ceo}}" placeholder="CEO" [(ngModel)]="formData.ceo" name="ceo" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="headquarters">Headquarters</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="headquarters" value="{{company?.headquarters}}" placeholder="Headquarters" [(ngModel)]="formData.headquarters" name="headquarters" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="website">Website</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="website" value="{{company?.website}}" placeholder="Website" [(ngModel)]="formData.website" name="website" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="email" class="form-control" maxlength="200" id="email" value="{{company?.email}}" placeholder="Email" [(ngModel)]="formData.email" name="email" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="summary">Summary</label>
+        <textarea class="form-control" maxlength="2000" id="summary" value="{{company?.summary}}" placeholder="Summary" [(ngModel)]="formData.summary" name="summary"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="topInterests">Top Interests</label>
+        <select multiple class="form-control" id="topInterests" [(ngModel)]="formData.topInterests" name="topInterests">
+          <option>AI Underwriting</option>
+          <option>RPA Software</option>
+          <option>Risk Mitigation IoT</option>
+          <option>Blockchain</option>
+          <option>Claims Automation</option>
+          <option>Computer Vision</option>
+          <option>Smart Home Devices</option>
+          <option>Aerial Imagery</option>
+          <option>New Sources of Data</option>
+          <option>Customer Engagement</option>
+          <option>Customer Retention</option>
+          <option>Distribution Channels</option>
+          <option>Chatbots</option>
+          <option>New Products</option>
+          <option>Telematics</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="incentive">Incentive</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="incentive" value="{{company?.incentive}}" placeholder="Incentive" [(ngModel)]="formData.incentive" name="incentive" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="pressReleases">Press Releases</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="pressReleases" value="{{company?.pressReleases}}" placeholder="Press Releases" [(ngModel)]="formData.pressReleases" name="pressReleases" required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="pilotsAndInnovation">Pilots And Innovation</label>
+        <p style="color:#ffeb3b;display: inline;font-size: 12px;margin-left:10px;">*required</p>
+        <input type="text" class="form-control" maxlength="200" id="pilotsAndInnovation" value="{{company?.pilotsAndInnovation}}" placeholder="Pilots and Innovation" [(ngModel)]="formData.pilotsAndInnovation" name="pilotsAndInnovation" required>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <div class="col-sm-1" style="padding-left: 0px;top:3px;">
+        <div *ngIf="company?.portfolio">
+          <input type="checkbox" class="form-control" id="portfolio" checked="checked" value="{{company?.portfolio}}" [(ngModel)]="formData.portfolio" name="portfolio">
+        </div>
+        <div *ngIf="!company?.portfolio">
+          <input type="checkbox" class="form-control" id="portfolio" value="{{company?.portfolio}}" [(ngModel)]="formData.portfolio" name="portfolio">
+        </div>
+        </div>   
+        <div class="col-sm-11" style="padding-left: 0px">
+          <span>Portfolio</span>
+        </div>     
+      </div>
+    </div>
+  </div>
+  <button type="submit" (click)="initSubmit()" class="btn btn-primary">Submit</button>
+  </form>
+  <div class="row">
+      <div class="col-sm-12">
+        <div style="width:50%;margin:auto;text-align:center;">
+        <a [routerLink]="['/pages/startups']">
+          <i class="fa fa-backward" aria-hidden="true" style="display:inline-block;font-size: 14px;color:white;"></i>
+          <div style="font-size: 12px;display:inline-block;padding-left:5px;color:white;">Go back to startups</div>              
+        </a>
+        </div>
+      </div>
+    </div>
+  </ba-card>
+</div>

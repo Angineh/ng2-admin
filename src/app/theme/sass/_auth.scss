@@ -15,8 +15,8 @@ $text-color: #ffffff;
   width: 540px;
   margin: 0 auto;
   border-radius: 5px;
-  @include bg-translucent-dark(0.55);
-  color: #fff;
+  border: 1px solid $input-border; 
+  color:rgba(68, 68, 68, 0.5);
   padding: 32px;
   h1 {
     font-weight: $font-light;
@@ -38,7 +38,7 @@ $text-color: #ffffff;
 
   .control-label {
     padding-top: 11px;
-    color: $text-color;
+    color: $default-text;
   }
 
   .form-group {
@@ -123,5 +123,5 @@ a.forgot-pass {
 }
 
 .btn-auth {
-  color: #ffffff!important;
+  color: $default-text !important;
 }
